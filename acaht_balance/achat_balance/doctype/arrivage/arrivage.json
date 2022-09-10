@@ -1,0 +1,132 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2022-09-10 08:56:37.539464",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "naming_series",
+  "poids_brut_enter",
+  "poids_brut_sortie",
+  "produits_section",
+  "item_code",
+  "designation",
+  "produit_exception",
+  "exc_poid_a",
+  "section_break_8",
+  "produit_exc1",
+  "produit_exception2",
+  "exc_poid_b",
+  "section_break_14",
+  "produit_exc2"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "naming_series",
+   "options": "A-.YYYY.-.######"
+  },
+  {
+   "fieldname": "poids_brut_enter",
+   "fieldtype": "Float",
+   "label": "poids_brut_enter"
+  },
+  {
+   "fieldname": "poids_brut_sortie",
+   "fieldtype": "Float",
+   "label": "poids_brut_sortie"
+  },
+  {
+   "fieldname": "produits_section",
+   "fieldtype": "Section Break",
+   "label": "Produits"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": " item_code",
+   "options": "Item"
+  },
+  {
+   "default": "0",
+   "fieldname": "produit_exception",
+   "fieldtype": "Check",
+   "label": "produit_exception "
+  },
+  {
+   "depends_on": "eval:doc.produit_exception == 1",
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "produit_exc1",
+   "fieldtype": "Link",
+   "label": "produit_exc1",
+   "options": "Item"
+  },
+  {
+   "default": "0",
+   "fieldname": "produit_exception2",
+   "fieldtype": "Check",
+   "label": "produit_exception1"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation"
+  },
+  {
+   "fieldname": "exc_poid_a",
+   "fieldtype": "Float",
+   "label": "exc_poid_a"
+  },
+  {
+   "fieldname": "exc_poid_b",
+   "fieldtype": "Float",
+   "label": "exc_poid_b"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "produit_exc2",
+   "fieldtype": "Link",
+   "label": "produit_exc2",
+   "options": "Item"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-09-10 09:31:29.445039",
+ "modified_by": "Administrator",
+ "module": "achat balance",
+ "name": "Arrivage",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
