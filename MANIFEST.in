@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include acaht_balance *.css
+recursive-include acaht_balance *.csv
+recursive-include acaht_balance *.html
+recursive-include acaht_balance *.ico
+recursive-include acaht_balance *.js
+recursive-include acaht_balance *.json
+recursive-include acaht_balance *.md
+recursive-include acaht_balance *.png
+recursive-include acaht_balance *.py
+recursive-include acaht_balance *.svg
+recursive-include acaht_balance *.txt
+recursive-exclude acaht_balance *.pyc
