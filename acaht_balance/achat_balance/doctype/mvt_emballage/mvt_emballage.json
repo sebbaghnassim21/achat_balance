@@ -14,7 +14,9 @@
   "qtes_sortie",
   "qtes",
   "taux",
-  "montant"
+  "poids",
+  "montant",
+  "prive"
  ],
  "fields": [
   {
@@ -26,6 +28,7 @@
   {
    "fieldname": "client",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Client",
    "options": "Customer"
   },
@@ -46,11 +49,14 @@
    "label": "Qtes sortie"
   },
   {
+   "fetch_from": "qtes_sortie",
    "fieldname": "qtes",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Qtes"
   },
   {
+   "fetch_from": "emballage.taux",
    "fieldname": "taux",
    "fieldtype": "Currency",
    "label": "Taux"
@@ -58,30 +64,31 @@
   {
    "fieldname": "montant",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Montant"
+  },
+  {
+   "fetch_from": "emballage.poids",
+   "fieldname": "poids",
+   "fieldtype": "Float",
+   "label": "poids"
+  },
+  {
+   "default": "0",
+   "fieldname": "prive",
+   "fieldtype": "Check",
+   "label": "Emballage de la societ\u00e9"
   }
  ],
  "index_web_pages_for_search": 1,
+ "istable": 1,
  "links": [],
- "modified": "2022-09-25 22:50:49.426114",
+ "modified": "2022-09-26 07:56:43.249113",
  "modified_by": "Administrator",
  "module": "achat balance",
  "name": "Mvt Emballage",
  "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
+ "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

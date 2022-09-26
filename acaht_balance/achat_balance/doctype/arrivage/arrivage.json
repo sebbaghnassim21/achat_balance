@@ -15,6 +15,7 @@
   "item_code",
   "designation",
   "produit_exception",
+  "ajouter_pro_ex",
   "section_break_8",
   "produit_exc1",
   "designation_1",
@@ -28,7 +29,16 @@
   "section_break_19",
   "produit_exc3",
   "designation_3",
-  "exc_poid_c"
+  "exc_poid_c",
+  "emballage_section",
+  "mvm_emballage",
+  "section_break_25",
+  "total_entrer",
+  "total_amount",
+  "total_en_taux",
+  "total_montant",
+  "poids_entrer",
+  "poids_sortie"
  ],
  "fields": [
   {
@@ -155,11 +165,62 @@
    "fieldname": "exc_poid_c",
    "fieldtype": "Data",
    "label": "Poids"
+  },
+  {
+   "fieldname": "emballage_section",
+   "fieldtype": "Section Break",
+   "label": "Emballage"
+  },
+  {
+   "fieldname": "mvm_emballage",
+   "fieldtype": "Table",
+   "label": "Emballage",
+   "options": "Mvt Emballage"
+  },
+  {
+   "fieldname": "section_break_25",
+   "fieldtype": "Section Break",
+   "label": "Totaux emballage"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Float",
+   "label": "Pi\u00e8ces Sortie"
+  },
+  {
+   "fieldname": "total_entrer",
+   "fieldtype": "Float",
+   "label": "Pi\u00e8ces Entrer"
+  },
+  {
+   "fieldname": "total_montant",
+   "fieldtype": "Float",
+   "label": "Total Sortie"
+  },
+  {
+   "fieldname": "poids_entrer",
+   "fieldtype": "Float",
+   "label": "Poids entrer"
+  },
+  {
+   "fieldname": "poids_sortie",
+   "fieldtype": "Float",
+   "label": "Poids sortie"
+  },
+  {
+   "fieldname": "total_en_taux",
+   "fieldtype": "Data",
+   "label": "Total Entrer"
+  },
+  {
+   "fieldname": "ajouter_pro_ex",
+   "fieldtype": "Button",
+   "label": "Ajouter un produit exceptionnel"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-23 08:40:30.028916",
+ "modified": "2022-09-26 12:41:08.642910",
  "modified_by": "Administrator",
  "module": "achat balance",
  "name": "Arrivage",
