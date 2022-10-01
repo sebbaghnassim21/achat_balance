@@ -9,27 +9,33 @@
  "field_order": [
   "section_break_1",
   "naming_series",
+  "customer",
   "poids_brut_enter",
   "poids_brut_sortie",
   "produits_section",
   "item_code",
   "designation",
+  "prix_prin",
   "produit_exception",
   "ajouter_pro_ex",
   "section_break_8",
   "produit_exc1",
   "designation_1",
   "exc_poid_a",
+  "prix_exc1",
   "produit_exception2",
   "section_break_14",
   "produit_exc2",
   "designation_2",
   "exc_poid_b",
+  "prix_exc2",
   "produit_exception3",
   "section_break_19",
   "produit_exc3",
   "designation_3",
   "exc_poid_c",
+  "poid_exe_cc",
+  "prix_exc3",
   "emballage_section",
   "mvm_emballage",
   "section_break_25",
@@ -38,7 +44,9 @@
   "total_en_taux",
   "total_montant",
   "poids_entrer",
-  "poids_sortie"
+  "poids_sortie",
+  "total_ht",
+  "amended_from"
  ],
  "fields": [
   {
@@ -53,14 +61,18 @@
    "options": "A-.YYYY.-.######"
   },
   {
+   "default": "0",
    "fieldname": "poids_brut_enter",
    "fieldtype": "Float",
-   "label": "Poids entrer"
+   "label": "Poids entrer",
+   "precision": "2"
   },
   {
+   "default": "0",
    "fieldname": "poids_brut_sortie",
    "fieldtype": "Float",
-   "label": "Poids sortie"
+   "label": "Poids sortie",
+   "precision": "2"
   },
   {
    "fieldname": "produits_section",
@@ -104,14 +116,18 @@
    "label": "D\u00e9signation"
   },
   {
+   "default": "0",
    "fieldname": "exc_poid_a",
    "fieldtype": "Float",
-   "label": "Poids"
+   "label": "Poids",
+   "precision": "2"
   },
   {
+   "default": "0",
    "fieldname": "exc_poid_b",
    "fieldtype": "Float",
-   "label": "Poids"
+   "label": "Poids",
+   "precision": "2"
   },
   {
    "depends_on": "eval:doc.produit_exception2 == 1",
@@ -164,6 +180,7 @@
   {
    "fieldname": "exc_poid_c",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Poids"
   },
   {
@@ -183,44 +200,119 @@
    "label": "Totaux emballage"
   },
   {
+   "default": "0",
    "fieldname": "total_amount",
    "fieldtype": "Float",
-   "label": "Pi\u00e8ces Sortie"
+   "label": "Pi\u00e8ces Sortie",
+   "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "total_entrer",
    "fieldtype": "Float",
-   "label": "Pi\u00e8ces Entrer"
+   "label": "Pi\u00e8ces Entrer",
+   "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "total_montant",
    "fieldtype": "Float",
-   "label": "Total Sortie"
+   "label": "Total Sortie",
+   "precision": "2",
+   "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "poids_entrer",
    "fieldtype": "Float",
-   "label": "Poids entrer"
+   "label": "Poids entrer",
+   "precision": "2",
+   "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "poids_sortie",
    "fieldtype": "Float",
-   "label": "Poids sortie"
+   "label": "Poids sortie",
+   "precision": "2",
+   "read_only": 1
   },
   {
+   "default": "0",
    "fieldname": "total_en_taux",
    "fieldtype": "Data",
-   "label": "Total Entrer"
+   "label": "Total Entrer",
+   "read_only": 1
   },
   {
    "fieldname": "ajouter_pro_ex",
    "fieldtype": "Button",
    "label": "Ajouter un produit exceptionnel"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Fournisseur",
+   "options": "Supplier"
+  },
+  {
+   "default": "0",
+   "fieldname": "poid_exe_cc",
+   "fieldtype": "Float",
+   "label": "Poids",
+   "non_negative": 1,
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_ht",
+   "fieldtype": "Float",
+   "label": "Total HT",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "prix_prin",
+   "fieldtype": "Currency",
+   "label": "Prix",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "prix_exc1",
+   "fieldtype": "Currency",
+   "label": "Prix",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "prix_exc2",
+   "fieldtype": "Currency",
+   "label": "Prix",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "prix_exc3",
+   "fieldtype": "Currency",
+   "label": "Prix",
+   "precision": "2"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Arrivage",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2022-09-26 12:41:08.642910",
+ "modified": "2022-10-01 09:06:59.029133",
  "modified_by": "Administrator",
  "module": "achat balance",
  "name": "Arrivage",
