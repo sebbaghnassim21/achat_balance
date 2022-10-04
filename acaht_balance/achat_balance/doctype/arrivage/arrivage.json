@@ -12,6 +12,7 @@
   "customer",
   "poids_brut_enter",
   "poids_brut_sortie",
+  "dechet",
   "produits_section",
   "item_code",
   "designation",
@@ -46,6 +47,9 @@
   "poids_entrer",
   "poids_sortie",
   "total_ht",
+  "ancien_solde",
+  "montant_verse",
+  "nouveau_solde",
   "amended_from"
  ],
  "fields": [
@@ -307,12 +311,40 @@
    "options": "Arrivage",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ancien_solde",
+   "fieldtype": "Currency",
+   "label": "Ancien solde",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "montant_verse",
+   "fieldtype": "Currency",
+   "label": "Montant vers\u00e9",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "nouveau_solde",
+   "fieldtype": "Currency",
+   "label": "Nouveau solde",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "dechet",
+   "fieldtype": "Percent",
+   "label": "D\u00e9chet",
+   "precision": "2"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-01 09:06:59.029133",
+ "modified": "2022-10-03 22:47:03.787150",
  "modified_by": "Administrator",
  "module": "achat balance",
  "name": "Arrivage",
