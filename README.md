@@ -20,6 +20,14 @@ Application Frappe/ERPNext destinée aux huileries qui achètent des olives, pro
 - calcul du rendement ;
 - création d'un mouvement de stock ERPNext de type Repack en brouillon.
 
+### Conditionnement et préparation à la vente
+
+- consommation d'un lot d'huile ou d'olives de table en vrac ;
+- plusieurs formats de vente dans une même opération ;
+- calcul automatique des quantités conditionnées et des pertes ;
+- contrôle empêchant de conditionner plus que la quantité disponible ;
+- création d'un mouvement de stock `Repack` en brouillon pour alimenter le stock vendable.
+
 Les ventes, livraisons, factures, paiements, stocks et lots utilisent les fonctions standards d'ERPNext 16.
 
 ## Installation de développement

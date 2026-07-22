@@ -64,3 +64,25 @@ def calculate_yield(input_quantity, output_quantity):
 	return (output_quantity / input_quantity * Decimal("100")).quantize(
 		Decimal("0.01"), rounding=ROUND_HALF_UP
 	)
+
+
+def calculate_packaging(source_quantity, lines):
+	source_quantity = decimal_value(source_quantity)
+	if source_quantity <= ZERO:
+		raise ValueError("La quantité de vrac doit être supérieure à zéro.")
+
+	total_packaged = ZERO
+	for units, content_per_unit in lines:
+		units = decimal_value(units)
+		content_per_unit = decimal_value(content_per_unit)
+		if units <= ZERO or content_per_unit <= ZERO:
+			raise ValueError("Le nombre d'unités et la contenance doivent être positifs.")
+		total_packaged += units * content_per_unit
+
+	if total_packaged > source_quantity:
+		raise ValueError("La quantité conditionnée dépasse la quantité de vrac disponible.")
+
+	return {
+		"packaged_quantity": round_quantity(total_packaged),
+		"loss_quantity": round_quantity(source_quantity - total_packaged),
+	}
