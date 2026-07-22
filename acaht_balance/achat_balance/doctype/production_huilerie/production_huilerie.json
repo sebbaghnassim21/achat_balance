@@ -1,0 +1,51 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "naming_series:",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "identification_section", "naming_series", "date_production", "type_production", "statut", "column_break_1", "societe", "lot_reference", "responsable",
+  "matiere_section", "article_olives", "quantite_entree", "unite_entree", "column_break_2", "entrepot_source", "pertes", "observations",
+  "resultats_section", "produits_finis", "totaux_section", "quantite_produite", "rendement_pct", "column_break_3", "stock_entry", "amended_from"
+ ],
+ "fields": [
+  {"fieldname":"identification_section","fieldtype":"Section Break","label":"Identification"},
+  {"fieldname":"naming_series","fieldtype":"Select","label":"Série","options":"PROD-OL-.YYYY.-.#####","reqd":1},
+  {"default":"Today","fieldname":"date_production","fieldtype":"Date","label":"Date de production","reqd":1},
+  {"fieldname":"type_production","fieldtype":"Select","label":"Type de production","options":"Huile d'olive\nOlives de table","reqd":1},
+  {"default":"Brouillon","fieldname":"statut","fieldtype":"Select","label":"Statut","options":"Brouillon\nTerminée\nAnnulée","read_only":1},
+  {"fieldname":"column_break_1","fieldtype":"Column Break"},
+  {"fieldname":"societe","fieldtype":"Link","label":"Société","options":"Company","reqd":1},
+  {"description":"Numéro de lot interne ou référence de réception","fieldname":"lot_reference","fieldtype":"Data","label":"Lot de matière première","reqd":1},
+  {"fieldname":"responsable","fieldtype":"Link","label":"Responsable","options":"User"},
+  {"fieldname":"matiere_section","fieldtype":"Section Break","label":"Matière consommée"},
+  {"fieldname":"article_olives","fieldtype":"Link","label":"Article olives","options":"Item","reqd":1},
+  {"default":"0","fieldname":"quantite_entree","fieldtype":"Float","label":"Quantité consommée","non_negative":1,"precision":"3","reqd":1},
+  {"default":"Kg","fieldname":"unite_entree","fieldtype":"Link","label":"Unité","options":"UOM","reqd":1},
+  {"fieldname":"column_break_2","fieldtype":"Column Break"},
+  {"fieldname":"entrepot_source","fieldtype":"Link","label":"Entrepôt source","options":"Warehouse","reqd":1},
+  {"default":"0","fieldname":"pertes","fieldtype":"Float","label":"Pertes constatées","non_negative":1,"precision":"3"},
+  {"fieldname":"observations","fieldtype":"Small Text","label":"Observations"},
+  {"fieldname":"resultats_section","fieldtype":"Section Break","label":"Produits obtenus"},
+  {"fieldname":"produits_finis","fieldtype":"Table","label":"Produits finis et sous-produits","options":"Produit Fini Huilerie","reqd":1},
+  {"fieldname":"totaux_section","fieldtype":"Section Break","label":"Résultats"},
+  {"default":"0","fieldname":"quantite_produite","fieldtype":"Float","label":"Quantité principale produite","precision":"3","read_only":1},
+  {"default":"0","fieldname":"rendement_pct","fieldtype":"Percent","label":"Rendement indicatif","precision":"2","read_only":1},
+  {"fieldname":"column_break_3","fieldtype":"Column Break"},
+  {"fieldname":"stock_entry","fieldtype":"Link","label":"Mouvement de stock","options":"Stock Entry","read_only":1},
+  {"fieldname":"amended_from","fieldtype":"Link","label":"Modifié depuis","no_copy":1,"options":"Production Huilerie","print_hide":1,"read_only":1}
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "module": "achat balance",
+ "name": "Production Huilerie",
+ "permissions": [
+  {"create":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Manufacturing User","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Manufacturing Manager","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"System Manager","share":1,"submit":1,"write":1}
+ ],
+ "sort_field": "date_production",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

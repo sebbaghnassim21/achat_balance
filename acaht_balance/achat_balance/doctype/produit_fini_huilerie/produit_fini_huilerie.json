@@ -1,0 +1,21 @@
+{
+ "actions": [],
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["type_produit", "article", "quantite", "unite", "entrepot", "taux_conversion", "cout_unitaire", "montant"],
+ "fields": [
+  {"fieldname":"type_produit","fieldtype":"Select","in_list_view":1,"label":"Type de produit","options":"Huile d'olive\nOlives de table\nSous-produit","reqd":1},
+  {"fieldname":"article","fieldtype":"Link","in_list_view":1,"label":"Article","options":"Item","reqd":1},
+  {"default":"0","fieldname":"quantite","fieldtype":"Float","in_list_view":1,"label":"Quantité","non_negative":1,"precision":"3","reqd":1},
+  {"fieldname":"unite","fieldtype":"Link","label":"Unité","options":"UOM","reqd":1},
+  {"fieldname":"entrepot","fieldtype":"Link","label":"Entrepôt destination","options":"Warehouse","reqd":1},
+  {"default":"1","description":"Conversion vers l'unité de stock de l'article","fieldname":"taux_conversion","fieldtype":"Float","label":"Taux de conversion","reqd":1},
+  {"default":"0","fieldname":"cout_unitaire","fieldtype":"Currency","label":"Coût unitaire","non_negative":1,"precision":"2"},
+  {"default":"0","fieldname":"montant","fieldtype":"Currency","label":"Montant","precision":"2","read_only":1}
+ ],
+ "istable": 1,
+ "module": "achat balance",
+ "name": "Produit Fini Huilerie",
+ "permissions": []
+}
