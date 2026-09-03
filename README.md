@@ -36,7 +36,11 @@ Application Frappe/ERPNext destinée aux huileries qui achètent des olives, pro
 - retours complets ou partiels ;
 - suivi séparé du matériel rendu, perdu et endommagé ;
 - calcul du matériel restant et du montant de caution ;
+- calcul du solde net à payer au fournisseur après retenue du matériel non rendu ;
 - clôture automatique lorsque tout le matériel est régularisé.
+
+Exemple : pour une dette fournisseur de 50 000 DA et 10 caisses non rendues à
+1 000 DA, la retenue est de 10 000 DA et le solde net à payer est de 40 000 DA.
 
 Les ventes, livraisons, factures, paiements, stocks et lots utilisent les fonctions standards d'ERPNext 16.
 

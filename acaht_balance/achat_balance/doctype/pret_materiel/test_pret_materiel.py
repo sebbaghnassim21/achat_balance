@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from acaht_balance.achat_balance.calculations import calculate_loan_line
+from acaht_balance.achat_balance.calculations import calculate_loan_line, calculate_supplier_settlement
 
 
 class TestLoanCalculations(TestCase):
@@ -16,3 +16,11 @@ class TestLoanCalculations(TestCase):
 	def test_rejects_non_positive_loan(self):
 		with self.assertRaises(ValueError):
 			calculate_loan_line(0)
+
+	def test_deducts_material_from_supplier_debt(self):
+		result = calculate_supplier_settlement(50000, 10 * 1000)
+		self.assertEqual(str(result["net_payable"]), "40000.00")
+
+	def test_negative_net_means_supplier_owes_company(self):
+		result = calculate_supplier_settlement(5000, 10000)
+		self.assertEqual(str(result["net_payable"]), "-5000.00")

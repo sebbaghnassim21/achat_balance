@@ -105,3 +105,15 @@ def calculate_loan_line(loaned, returned=0, lost=0, damaged=0, deposit_rate=0):
 		"remaining": round_quantity(loaned - processed),
 		"deposit_amount": round_money(loaned * deposit_rate),
 	}
+
+
+def calculate_supplier_settlement(supplier_debt, material_retention):
+	supplier_debt = decimal_value(supplier_debt)
+	material_retention = decimal_value(material_retention)
+	if supplier_debt < ZERO or material_retention < ZERO:
+		raise ValueError("La dette fournisseur et la retenue matériel ne peuvent pas être négatives.")
+	return {
+		"supplier_debt": round_money(supplier_debt),
+		"material_retention": round_money(material_retention),
+		"net_payable": round_money(supplier_debt - material_retention),
+	}
