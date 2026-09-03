@@ -86,3 +86,22 @@ def calculate_packaging(source_quantity, lines):
 		"packaged_quantity": round_quantity(total_packaged),
 		"loss_quantity": round_quantity(source_quantity - total_packaged),
 	}
+
+
+def calculate_loan_line(loaned, returned=0, lost=0, damaged=0, deposit_rate=0):
+	loaned = decimal_value(loaned)
+	returned = decimal_value(returned)
+	lost = decimal_value(lost)
+	damaged = decimal_value(damaged)
+	deposit_rate = decimal_value(deposit_rate)
+	if loaned <= ZERO:
+		raise ValueError("La quantité prêtée doit être supérieure à zéro.")
+	if min(returned, lost, damaged, deposit_rate) < ZERO:
+		raise ValueError("Les quantités et la caution ne peuvent pas être négatives.")
+	processed = returned + lost + damaged
+	if processed > loaned:
+		raise ValueError("Le total rendu, perdu et endommagé dépasse la quantité prêtée.")
+	return {
+		"remaining": round_quantity(loaned - processed),
+		"deposit_amount": round_money(loaned * deposit_rate),
+	}

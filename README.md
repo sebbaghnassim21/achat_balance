@@ -28,6 +28,16 @@ Application Frappe/ERPNext destinée aux huileries qui achètent des olives, pro
 - contrôle empêchant de conditionner plus que la quantité disponible ;
 - création d'un mouvement de stock `Repack` en brouillon pour alimenter le stock vendable.
 
+### Prêt d'échelles et de caisses (sandok)
+
+- catalogue du matériel avec catégorie et caution unitaire ;
+- prêt de plusieurs types de matériel à un fournisseur ;
+- date prévue de restitution et responsable ;
+- retours complets ou partiels ;
+- suivi séparé du matériel rendu, perdu et endommagé ;
+- calcul du matériel restant et du montant de caution ;
+- clôture automatique lorsque tout le matériel est régularisé.
+
 Les ventes, livraisons, factures, paiements, stocks et lots utilisent les fonctions standards d'ERPNext 16.
 
 ## Installation de développement
