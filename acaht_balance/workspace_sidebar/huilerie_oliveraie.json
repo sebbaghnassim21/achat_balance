@@ -6,7 +6,7 @@
  "header_icon": "stock",
  "idx": 0,
  "items": [
-  {"child":0,"collapsible":1,"icon":"home","indent":0,"keep_closed":0,"label":"Accueil Huilerie","link_to":"Huilerie & Oliveraie","link_type":"Workspace","show_arrow":0,"type":"Link"},
+  {"child":0,"collapsible":1,"icon":"home","indent":0,"keep_closed":0,"label":"Accueil Huilerie","link_to":"Huilerie Oliveraie","link_type":"Workspace","show_arrow":0,"type":"Link"},
   {"child":0,"collapsible":1,"icon":"buying","indent":0,"keep_closed":0,"label":"Réception des olives","link_to":"Reception Olive","link_type":"DocType","show_arrow":0,"type":"Link"},
   {"child":0,"collapsible":1,"icon":"organization","indent":0,"keep_closed":0,"label":"Production","link_to":"Production Huilerie","link_type":"DocType","show_arrow":0,"type":"Link"},
   {"child":0,"collapsible":1,"icon":"stock","indent":0,"keep_closed":0,"label":"Conditionnement","link_to":"Conditionnement Huilerie","link_type":"DocType","show_arrow":0,"type":"Link"},
@@ -24,8 +24,8 @@
  "modified": "2026-09-07 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "achat balance",
- "name": "Huilerie & Oliveraie",
+ "name": "Huilerie Oliveraie",
  "owner": "Administrator",
  "standard": 1,
- "title": "Huilerie & Oliveraie"
+ "title": "Huilerie Oliveraie"
 }

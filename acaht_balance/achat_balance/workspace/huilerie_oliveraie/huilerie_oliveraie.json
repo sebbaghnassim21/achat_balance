@@ -11,12 +11,12 @@
  "icon": "stock",
  "idx": 0,
  "is_hidden": 0,
- "label": "Huilerie & Oliveraie",
+ "label": "Huilerie Oliveraie",
  "links": [],
  "modified": "2026-09-07 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "achat balance",
- "name": "Huilerie & Oliveraie",
+ "name": "Huilerie Oliveraie",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
@@ -38,6 +38,6 @@
   {"color":"Grey","doc_view":"List","label":"Clients","link_to":"Customer","type":"DocType"},
   {"color":"Grey","doc_view":"List","label":"Fournisseurs","link_to":"Supplier","type":"DocType"}
  ],
- "title": "Huilerie & Oliveraie",
+ "title": "Huilerie Oliveraie",
  "type": "Workspace"
 }
