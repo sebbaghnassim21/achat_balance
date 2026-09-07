@@ -4,6 +4,9 @@ Application Frappe/ERPNext destinée aux huileries qui achètent des olives, pro
 
 ## Fonctionnalités disponibles
 
+Le bureau ERPNext contient un espace de travail **Huilerie & Oliveraie** avec des
+raccourcis organisés vers les principales opérations du module.
+
 ### Réception et achat des olives
 
 - double pesée manuelle (entrée et sortie) ;
