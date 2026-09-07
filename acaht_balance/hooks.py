@@ -8,6 +8,17 @@ app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "sebbaghnassim21@gmail.com"
 app_license = "MIT"
+app_logo_url = "/assets/acaht_balance/images/huilerie-logo.svg"
+app_home = "/app/huilerie-oliveraie"
+
+add_to_apps_screen = [
+	{
+		"name": app_name,
+		"logo": app_logo_url,
+		"title": app_title,
+		"route": app_home,
+	}
+]
 
 # Includes in <head>
 # ------------------
