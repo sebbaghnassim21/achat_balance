@@ -105,3 +105,28 @@ def get_ancien_solde(fournisseur, societe, reception=None, date_reception=None):
 		limit=1,
 	)
 	return flt(previous[0].nouveau_solde) if previous else 0
+
+
+@frappe.whitelist()
+def recalculer_historique_soldes():
+	"""Rebuild the running supplier balance of all submitted receptions."""
+	balances = {}
+	updated = 0
+	rows = frappe.get_all(
+		"Reception Olive",
+		filters={"docstatus": 1},
+		fields=["name", "fournisseur", "societe", "montant_achat", "montant_verse"],
+		order_by="date_reception asc, creation asc",
+	)
+	for row in rows:
+		key = (row.fournisseur, row.societe)
+		old_balance = balances.get(key, 0)
+		new_balance = old_balance + flt(row.montant_achat) - flt(row.montant_verse)
+		frappe.db.set_value(
+			"Reception Olive", row.name,
+			{"ancien_solde": old_balance, "nouveau_solde": new_balance},
+			update_modified=False,
+		)
+		balances[key] = new_balance
+		updated += 1
+	return {"receptions_mises_a_jour": updated}
