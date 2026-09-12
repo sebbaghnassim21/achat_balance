@@ -111,7 +111,9 @@ class ReceptionOlive(Document):
 
 
 @frappe.whitelist()
-def get_ancien_solde(fournisseur, societe, reception=None, date_reception=None):
+def get_ancien_solde(
+	fournisseur, societe, reception=None, date_reception=None, pret_materiel=None,
+):
 	"""Return purchases minus all submitted supplier settlements."""
 	if not fournisseur or not societe:
 		return 0
@@ -141,7 +143,19 @@ def get_ancien_solde(fournisseur, societe, reception=None, date_reception=None):
 			where {' and '.join(settlement_conditions)}""",
 			settlement_values,
 		)[0][0]
-	return flt(purchases) - flt(settlements)
+	material_retention = 0
+	if frappe.db.exists("DocType", "Pret Materiel"):
+		loan_conditions = ["fournisseur=%s", "societe=%s", "docstatus=1"]
+		loan_values = [fournisseur, societe]
+		if pret_materiel:
+			loan_conditions.append("name!=%s")
+			loan_values.append(pret_materiel)
+		material_retention = frappe.db.sql(
+			f"""select coalesce(sum(retenue_materiel), 0)
+			from `tabPret Materiel` where {' and '.join(loan_conditions)}""",
+			loan_values,
+		)[0][0]
+	return flt(purchases) - flt(settlements) - flt(material_retention)
 
 
 @frappe.whitelist()

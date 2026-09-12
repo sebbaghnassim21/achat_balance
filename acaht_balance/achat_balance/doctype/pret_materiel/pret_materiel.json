@@ -17,8 +17,8 @@
   {"default":"0","fieldname":"montant_caution","fieldtype":"Currency","label":"Caution calculée","read_only":1},
   {"default":"0","fieldname":"caution_versee","fieldtype":"Currency","label":"Caution versée","non_negative":1},
   {"fieldname":"column_break_2","fieldtype":"Column Break"},
-  {"default":"0","description":"Montant brut que la société doit payer au fournisseur","fieldname":"dette_fournisseur","fieldtype":"Currency","label":"Dette envers le fournisseur","non_negative":1,"precision":"2"},
-  {"default":"0","description":"Valeur du matériel non rendu, perdu ou endommagé","fieldname":"retenue_materiel","fieldtype":"Currency","label":"Retenue matériel","precision":"2","read_only":1},
+  {"default":"0","description":"Crédit calculé automatiquement depuis les réceptions et règlements du fournisseur","fieldname":"dette_fournisseur","fieldtype":"Currency","label":"Crédit fournisseur avant matériel","precision":"2","read_only":1},
+  {"default":"0","description":"Valeur du matériel non rendu moins la caution déjà versée","fieldname":"retenue_materiel","fieldtype":"Currency","label":"Retenue nette matériel","precision":"2","read_only":1},
   {"default":"0","description":"Dette fournisseur moins retenue matériel. Une valeur négative est à recevoir du fournisseur.","fieldname":"solde_net_fournisseur","fieldtype":"Currency","label":"Solde net à payer","precision":"2","read_only":1},
   {"fieldname":"observations","fieldtype":"Small Text","label":"Observations"},
   {"fieldname":"amended_from","fieldtype":"Link","label":"Modifié depuis","no_copy":1,"options":"Pret Materiel","print_hide":1,"read_only":1}

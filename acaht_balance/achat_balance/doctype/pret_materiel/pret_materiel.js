@@ -6,4 +6,21 @@ frappe.ui.form.on("Pret Materiel", {
 			});
 		}
 	},
+	fournisseur: charger_credit,
+	societe: charger_credit,
 });
+
+function charger_credit(frm) {
+	if (!frm.doc.fournisseur || !frm.doc.societe) return;
+	frappe.call({
+		method: "acaht_balance.achat_balance.doctype.reception_olive.reception_olive.get_ancien_solde",
+		args: {
+			fournisseur: frm.doc.fournisseur,
+			societe: frm.doc.societe,
+			pret_materiel: frm.doc.name,
+		},
+		callback(r) {
+			frm.set_value("dette_fournisseur", flt(r.message));
+		},
+	});
+}

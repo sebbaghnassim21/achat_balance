@@ -24,3 +24,8 @@ class TestLoanCalculations(TestCase):
 	def test_negative_net_means_supplier_owes_company(self):
 		result = calculate_supplier_settlement(5000, 10000)
 		self.assertEqual(str(result["net_payable"]), "-5000.00")
+
+	def test_paid_deposit_reduces_material_retention(self):
+		result = calculate_supplier_settlement(150000, 10000, 4000)
+		self.assertEqual(str(result["material_retention"]), "6000.00")
+		self.assertEqual(str(result["net_payable"]), "144000.00")

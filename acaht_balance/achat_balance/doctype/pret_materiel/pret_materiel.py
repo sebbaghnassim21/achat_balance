@@ -4,10 +4,14 @@ from frappe.model.document import Document
 from frappe.utils import flt
 
 from acaht_balance.achat_balance.calculations import calculate_loan_line, calculate_supplier_settlement
+from acaht_balance.achat_balance.doctype.reception_olive.reception_olive import get_ancien_solde
 
 
 class PretMateriel(Document):
 	def validate(self):
+		self.dette_fournisseur = get_ancien_solde(
+			self.fournisseur, self.societe, pret_materiel=self.name,
+		)
 		if self.date_retour_prevue and self.date_retour_prevue < self.date_pret:
 			frappe.throw(_("La date de retour prévue ne peut pas précéder la date du prêt."))
 		if not self.materiels:
@@ -63,13 +67,21 @@ class PretMateriel(Document):
 			material_retention += (flt(row.quantite_pretee) - flt(values[0])) * flt(row.caution_unitaire)
 		status = "Clôturé" if total_remaining == 0 else "Partiellement rendu" if has_activity else "En cours"
 		self.db_set("statut", status, update_modified=False)
-		result = calculate_supplier_settlement(self.dette_fournisseur, material_retention)
+		self.dette_fournisseur = get_ancien_solde(
+			self.fournisseur, self.societe, pret_materiel=self.name,
+		)
+		result = calculate_supplier_settlement(
+			self.dette_fournisseur, material_retention, self.caution_versee,
+		)
+		self.db_set("dette_fournisseur", self.dette_fournisseur, update_modified=False)
 		self.db_set("retenue_materiel", float(result["material_retention"]), update_modified=False)
 		self.db_set("solde_net_fournisseur", float(result["net_payable"]), update_modified=False)
 
 	def _set_financial_totals(self, material_retention):
 		try:
-			result = calculate_supplier_settlement(self.dette_fournisseur, material_retention)
+			result = calculate_supplier_settlement(
+				self.dette_fournisseur, material_retention, self.caution_versee,
+			)
 		except ValueError as exc:
 			frappe.throw(_(str(exc)))
 		self.retenue_materiel = float(result["material_retention"])
