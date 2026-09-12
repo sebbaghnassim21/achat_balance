@@ -6,7 +6,7 @@ from frappe.utils import flt, get_first_day, nowdate
 def get_kpis():
 	start = get_first_day(nowdate())
 	def total(doctype, field, filters):
-		return flt(frappe.db.get_value(doctype, filters, f"sum({field})") or 0)
+		return sum(flt(value) for value in frappe.get_all(doctype, filters=filters, pluck=field))
 
 	monthly = frappe.db.sql("""
 		SELECT DATE_FORMAT(months.month_start, '%%Y-%%m') label,
