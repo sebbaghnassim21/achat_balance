@@ -1,4 +1,9 @@
 frappe.ui.form.on("Pret Materiel", {
+	setup(frm) {
+		frm.set_query("compte_caution", () => ({
+			filters: { company: frm.doc.societe, is_group: 0, account_type: ["in", ["Bank", "Cash"]] },
+		}));
+	},
 	refresh(frm) {
 		if (frm.doc.docstatus === 1 && frm.doc.statut !== "Clôturé") {
 			frm.add_custom_button(__("Enregistrer un retour"), () => {

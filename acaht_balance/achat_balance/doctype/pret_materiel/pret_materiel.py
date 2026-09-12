@@ -36,13 +36,40 @@ class PretMateriel(Document):
 			# Le matériel perdu ou endommagé reste à la charge du fournisseur.
 			material_retention += (flt(row.quantite_pretee) - flt(row.quantite_rendue)) * flt(row.caution_unitaire)
 		self.montant_caution = total_deposit
+		if flt(self.caution_versee) > flt(self.montant_caution):
+			frappe.throw(_("La caution versée ne peut pas dépasser la caution calculée."))
 		self._set_financial_totals(material_retention)
 
 	def before_submit(self):
 		self.statut = "En cours"
 
+	def on_submit(self):
+		self._creer_encaissement_caution()
+
 	def on_cancel(self):
+		if self.payment_entry_caution:
+			payment = frappe.get_doc("Payment Entry", self.payment_entry_caution)
+			if payment.docstatus == 1:
+				payment.cancel()
 		self.statut = "Annulé"
+
+	def _creer_encaissement_caution(self):
+		if not flt(self.caution_versee) or self.payment_entry_caution:
+			return
+		from erpnext.accounts.party import get_party_account
+		party_account = get_party_account("Supplier", self.fournisseur, self.societe)
+		payment = frappe.get_doc({
+			"doctype": "Payment Entry", "payment_type": "Receive", "company": self.societe,
+			"posting_date": self.date_pret, "mode_of_payment": self.mode_paiement_caution,
+			"party_type": "Supplier", "party": self.fournisseur,
+			"paid_from": party_account, "paid_to": self.compte_caution,
+			"paid_amount": self.caution_versee, "received_amount": self.caution_versee,
+			"source_exchange_rate": 1, "target_exchange_rate": 1,
+			"remarks": _("Caution reçue pour le prêt {0}").format(self.name),
+		})
+		payment.insert()
+		payment.submit()
+		self.db_set("payment_entry_caution", payment.name)
 
 	def refresh_totals(self):
 		material_retention = 0

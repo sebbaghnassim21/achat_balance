@@ -3,6 +3,8 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, getdate
 
+from acaht_balance.achat_balance.calculations import calculate_refundable_deposit
+
 
 class RetourMateriel(Document):
 	def validate(self):
@@ -35,9 +37,52 @@ class RetourMateriel(Document):
 			)[0][0]
 			if prior + current > loaned[row.materiel]:
 				frappe.throw(_("Le retour dépasse le solde prêté pour {0}.").format(row.materiel))
+		deposit_rates = {row.materiel: flt(row.caution_unitaire) for row in loan.materiels}
+		returned_value = sum(flt(row.quantite_rendue) * deposit_rates[row.materiel] for row in self.materiels)
+		prior_returned_value = frappe.db.sql(
+			"""select coalesce(sum(l.quantite_rendue * p.caution_unitaire), 0)
+			from `tabLigne Retour Materiel` l
+			inner join `tabRetour Materiel` r on r.name=l.parent
+			inner join `tabLigne Pret Materiel` p on p.parent=r.pret_materiel and p.materiel=l.materiel
+			where r.pret_materiel=%s and r.docstatus=1 and r.name!=%s""",
+			(self.pret_materiel, self.name or ""),
+		)[0][0]
+		already_refunded = frappe.db.sql(
+			"""select coalesce(sum(montant_caution_restituee), 0)
+			from `tabRetour Materiel` where pret_materiel=%s and docstatus=1 and name!=%s""",
+			(self.pret_materiel, self.name or ""),
+		)[0][0]
+		self.montant_caution_restituee = float(calculate_refundable_deposit(
+			loan.montant_caution, loan.caution_versee,
+			flt(prior_returned_value) + returned_value, already_refunded,
+		))
 
 	def on_submit(self):
 		frappe.get_doc("Pret Materiel", self.pret_materiel).refresh_totals()
+		self._creer_remboursement_caution()
 
 	def on_cancel(self):
+		if self.payment_entry_caution:
+			payment = frappe.get_doc("Payment Entry", self.payment_entry_caution)
+			if payment.docstatus == 1:
+				payment.cancel()
 		frappe.get_doc("Pret Materiel", self.pret_materiel).refresh_totals()
+
+	def _creer_remboursement_caution(self):
+		if self.traitement_caution != "Rembourser en espèces/banque" or not flt(self.montant_caution_restituee):
+			return
+		from erpnext.accounts.party import get_party_account
+		party_account = get_party_account("Supplier", self.fournisseur, self.societe)
+		payment = frappe.get_doc({
+			"doctype": "Payment Entry", "payment_type": "Pay", "company": self.societe,
+			"posting_date": self.date_retour, "mode_of_payment": self.mode_paiement_caution,
+			"party_type": "Supplier", "party": self.fournisseur,
+			"paid_from": self.compte_caution, "paid_to": party_account,
+			"paid_amount": self.montant_caution_restituee,
+			"received_amount": self.montant_caution_restituee,
+			"source_exchange_rate": 1, "target_exchange_rate": 1,
+			"remarks": _("Remboursement de caution du prêt {0}").format(self.pret_materiel),
+		})
+		payment.insert()
+		payment.submit()
+		self.db_set("payment_entry_caution", payment.name)

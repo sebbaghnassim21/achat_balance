@@ -135,3 +135,16 @@ def calculate_supplier_settlement(supplier_debt, material_value, deposit_paid=0)
 		"material_retention": round_money(material_retention),
 		"net_payable": round_money(supplier_debt - material_retention),
 	}
+
+
+def calculate_refundable_deposit(total_material_value, deposit_paid, returned_value, already_refunded=0):
+	total_material_value = decimal_value(total_material_value)
+	deposit_paid = decimal_value(deposit_paid)
+	returned_value = decimal_value(returned_value)
+	already_refunded = decimal_value(already_refunded)
+	if min(total_material_value, deposit_paid, returned_value, already_refunded) < ZERO:
+		raise ValueError("Les valeurs de caution ne peuvent pas être négatives.")
+	if deposit_paid == ZERO or total_material_value == ZERO:
+		return ZERO
+	cumulative = min(deposit_paid, deposit_paid * returned_value / total_material_value)
+	return round_money(max(ZERO, cumulative - already_refunded))

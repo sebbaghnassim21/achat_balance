@@ -1,6 +1,8 @@
 from unittest import TestCase
 
-from acaht_balance.achat_balance.calculations import calculate_loan_line, calculate_supplier_settlement
+from acaht_balance.achat_balance.calculations import (
+	calculate_loan_line, calculate_refundable_deposit, calculate_supplier_settlement,
+)
 
 
 class TestLoanCalculations(TestCase):
@@ -29,3 +31,10 @@ class TestLoanCalculations(TestCase):
 		result = calculate_supplier_settlement(150000, 10000, 4000)
 		self.assertEqual(str(result["material_retention"]), "6000.00")
 		self.assertEqual(str(result["net_payable"]), "144000.00")
+
+	def test_refunds_deposit_proportionally_without_duplicates(self):
+		self.assertEqual(str(calculate_refundable_deposit(10000, 10000, 6000)), "6000.00")
+		self.assertEqual(str(calculate_refundable_deposit(10000, 10000, 10000, 6000)), "4000.00")
+
+	def test_lost_material_does_not_release_deposit(self):
+		self.assertEqual(str(calculate_refundable_deposit(10000, 10000, 7000)), "7000.00")

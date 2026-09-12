@@ -143,6 +143,21 @@ def get_ancien_solde(
 			where {' and '.join(settlement_conditions)}""",
 			settlement_values,
 		)[0][0]
+	deposit_credit = 0
+	if frappe.db.exists("DocType", "Retour Materiel"):
+		credit_conditions = [
+			"fournisseur=%s", "societe=%s", "docstatus=1",
+			"traitement_caution='Ajouter au crédit fournisseur'",
+		]
+		credit_values = [fournisseur, societe]
+		if date_reception:
+			credit_conditions.append("date_retour<=%s")
+			credit_values.append(date_reception)
+		deposit_credit = frappe.db.sql(
+			f"""select coalesce(sum(montant_caution_restituee), 0)
+			from `tabRetour Materiel` where {' and '.join(credit_conditions)}""",
+			credit_values,
+		)[0][0]
 	material_retention = 0
 	if frappe.db.exists("DocType", "Pret Materiel"):
 		loan_conditions = ["fournisseur=%s", "societe=%s", "docstatus=1"]
@@ -155,7 +170,7 @@ def get_ancien_solde(
 			from `tabPret Materiel` where {' and '.join(loan_conditions)}""",
 			loan_values,
 		)[0][0]
-	return flt(purchases) - flt(settlements) - flt(material_retention)
+	return flt(purchases) - flt(settlements) - flt(material_retention) + flt(deposit_credit)
 
 
 @frappe.whitelist()

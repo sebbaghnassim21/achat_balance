@@ -1,6 +1,6 @@
 {
  "actions":[], "allow_rename":0, "autoname":"naming_series:", "doctype":"DocType", "engine":"InnoDB",
- "field_order":["identification_section","naming_series","date_retour","pret_materiel","column_break_1","societe","fournisseur","responsable","materiel_section","materiels","observations","amended_from"],
+ "field_order":["identification_section","naming_series","date_retour","pret_materiel","column_break_1","societe","fournisseur","responsable","materiel_section","materiels","caution_section","traitement_caution","montant_caution_restituee","column_break_2","mode_paiement_caution","compte_caution","payment_entry_caution","observations","amended_from"],
  "fields":[
   {"fieldname":"identification_section","fieldtype":"Section Break","label":"Identification"},
   {"fieldname":"naming_series","fieldtype":"Select","label":"Série","options":"RET-MAT-.YYYY.-.#####","reqd":1},
@@ -12,6 +12,13 @@
   {"fieldname":"responsable","fieldtype":"Link","label":"Responsable","options":"User"},
   {"fieldname":"materiel_section","fieldtype":"Section Break","label":"Matériel traité"},
   {"fieldname":"materiels","fieldtype":"Table","label":"Retours, pertes et dommages","options":"Ligne Retour Materiel","reqd":1},
+  {"fieldname":"caution_section","fieldtype":"Section Break","label":"Restitution de la caution"},
+  {"default":"Ajouter au crédit fournisseur","fieldname":"traitement_caution","fieldtype":"Select","label":"Traitement de la caution","options":"Ajouter au crédit fournisseur\nRembourser en espèces/banque","reqd":1},
+  {"default":"0","fieldname":"montant_caution_restituee","fieldtype":"Currency","label":"Caution à restituer","precision":"2","read_only":1},
+  {"fieldname":"column_break_2","fieldtype":"Column Break"},
+  {"depends_on":"eval:doc.traitement_caution == 'Rembourser en espèces/banque' && doc.montant_caution_restituee > 0","fieldname":"mode_paiement_caution","fieldtype":"Link","label":"Mode de remboursement","mandatory_depends_on":"eval:doc.traitement_caution == 'Rembourser en espèces/banque' && doc.montant_caution_restituee > 0","options":"Mode of Payment"},
+  {"depends_on":"eval:doc.traitement_caution == 'Rembourser en espèces/banque' && doc.montant_caution_restituee > 0","fieldname":"compte_caution","fieldtype":"Link","label":"Compte caisse/banque","mandatory_depends_on":"eval:doc.traitement_caution == 'Rembourser en espèces/banque' && doc.montant_caution_restituee > 0","options":"Account"},
+  {"fieldname":"payment_entry_caution","fieldtype":"Link","label":"Remboursement caution ERPNext","options":"Payment Entry","read_only":1},
   {"fieldname":"observations","fieldtype":"Small Text","label":"Observations"},
   {"fieldname":"amended_from","fieldtype":"Link","label":"Modifié depuis","no_copy":1,"options":"Retour Materiel","print_hide":1,"read_only":1}
  ], "index_web_pages_for_search":1, "is_submittable":1, "module":"achat balance", "name":"Retour Materiel",
