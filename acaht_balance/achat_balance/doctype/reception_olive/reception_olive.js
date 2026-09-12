@@ -10,12 +10,34 @@ frappe.ui.form.on("Reception Olive", {
 	},
 	poids_entree: recalculer,
 	poids_sortie: recalculer,
-	tare_emballages: recalculer,
 	dechet_pct: recalculer,
 	prix_unitaire: recalculer,
 	ancien_solde: recalculer,
 	montant_verse: recalculer,
 });
+
+frappe.ui.form.on("Ligne Emballage Reception", {
+	article_emballage(frm, cdt, cdn) {
+		const row = locals[cdt][cdn];
+		if (!row.article_emballage) return;
+		frappe.db.get_value("Item", row.article_emballage, ["weight_per_unit", "weight_uom"]).then((r) => {
+			frappe.model.set_value(cdt, cdn, "poids_unitaire", flt(r.message.weight_per_unit));
+			frappe.model.set_value(cdt, cdn, "unite_poids", r.message.weight_uom || frm.doc.unite);
+		});
+	},
+	quantite: recalculer_emballages,
+	poids_unitaire: recalculer_emballages,
+	emballages_remove: recalculer_emballages,
+});
+
+function recalculer_emballages(frm, cdt, cdn) {
+	if (cdt && cdn && locals[cdt] && locals[cdt][cdn]) {
+		const row = locals[cdt][cdn];
+		frappe.model.set_value(cdt, cdn, "poids_total", flt(row.quantite) * flt(row.poids_unitaire));
+	}
+	const tare = (frm.doc.emballages || []).reduce((total, row) => total + flt(row.quantite) * flt(row.poids_unitaire), 0);
+	frm.set_value("tare_emballages", tare).then(() => recalculer(frm));
+}
 
 function recalculer(frm) {
 	const entree = flt(frm.doc.poids_entree);

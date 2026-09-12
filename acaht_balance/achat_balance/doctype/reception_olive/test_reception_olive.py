@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from acaht_balance.achat_balance.calculations import calculate_reception
+from acaht_balance.achat_balance.calculations import calculate_packaging_tare, calculate_reception
 
 
 class TestReceptionCalculations(TestCase):
@@ -18,3 +18,10 @@ class TestReceptionCalculations(TestCase):
 	def test_rejects_invalid_waste(self):
 		with self.assertRaises(ValueError):
 			calculate_reception(100, 20, waste_percent=101)
+
+	def test_calculates_packaging_tare(self):
+		self.assertEqual(str(calculate_packaging_tare([(10, 1.5), (4, 2.25)])), "24.000")
+
+	def test_rejects_packaging_without_weight(self):
+		with self.assertRaises(ValueError):
+			calculate_packaging_tare([(10, 0)])

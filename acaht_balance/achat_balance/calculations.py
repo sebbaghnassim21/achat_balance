@@ -56,6 +56,20 @@ def calculate_reception(
 	}
 
 
+def calculate_packaging_tare(lines):
+	"""Return the total tare for ``(quantity, unit_weight)`` packaging lines."""
+	total = ZERO
+	for quantity, unit_weight in lines:
+		quantity = decimal_value(quantity)
+		unit_weight = decimal_value(unit_weight)
+		if quantity <= ZERO:
+			raise ValueError("La quantité d'emballages doit être supérieure à zéro.")
+		if unit_weight <= ZERO:
+			raise ValueError("Le poids unitaire de l'emballage doit être supérieur à zéro.")
+		total += quantity * unit_weight
+	return round_quantity(total)
+
+
 def calculate_yield(input_quantity, output_quantity):
 	input_quantity = decimal_value(input_quantity)
 	output_quantity = decimal_value(output_quantity)
