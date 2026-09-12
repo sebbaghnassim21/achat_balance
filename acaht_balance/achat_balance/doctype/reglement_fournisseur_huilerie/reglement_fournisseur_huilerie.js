@@ -9,13 +9,7 @@ frappe.ui.form.on("Reglement Fournisseur Huilerie", {
 		}));
 	},
 	refresh(frm) {
-		if (frm.doc.docstatus === 1 && !frm.doc.payment_entry) {
-			frm.add_custom_button(__("Créer l'écriture de paiement"), () => {
-				frm.call("creer_ecriture_paiement").then((r) => {
-					if (r.message) frappe.set_route("Form", "Payment Entry", r.message);
-				});
-			}, __("Créer"));
-		}
+		// L'écriture de paiement est créée et validée automatiquement.
 	},
 	fournisseur: charger_solde,
 	societe: charger_solde,

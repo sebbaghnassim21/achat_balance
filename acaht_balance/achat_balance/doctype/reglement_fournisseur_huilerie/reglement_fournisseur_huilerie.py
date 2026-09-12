@@ -18,13 +18,23 @@ class ReglementFournisseurHuilerie(Document):
 	def before_submit(self):
 		self.statut = "Validé"
 
+	def on_submit(self):
+		self._creer_ecriture_paiement()
+
 	def on_cancel(self):
+		if self.payment_entry:
+			payment = frappe.get_doc("Payment Entry", self.payment_entry)
+			if payment.docstatus == 1:
+				payment.cancel()
 		self.statut = "Annulé"
 
 	@frappe.whitelist()
 	def creer_ecriture_paiement(self):
 		if self.docstatus != 1:
 			frappe.throw(_("Validez le règlement avant de créer l'écriture de paiement."))
+		return self._creer_ecriture_paiement()
+
+	def _creer_ecriture_paiement(self):
 		if self.payment_entry:
 			return self.payment_entry
 		from erpnext.accounts.party import get_party_account
@@ -49,5 +59,6 @@ class ReglementFournisseurHuilerie(Document):
 			"remarks": _("Créé depuis le règlement huilerie {0}").format(self.name),
 		})
 		doc.insert()
+		doc.submit()
 		self.db_set("payment_entry", doc.name)
 		return doc.name
