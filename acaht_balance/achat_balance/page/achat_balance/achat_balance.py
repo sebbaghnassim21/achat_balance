@@ -9,16 +9,16 @@ def get_kpis():
 		return sum(flt(value) for value in frappe.get_all(doctype, filters=filters, pluck=field))
 
 	monthly = frappe.db.sql("""
-		SELECT DATE_FORMAT(months.month_start, '%%Y-%%m') label,
+		SELECT DATE_FORMAT(months.month_start, '%Y-%m') label,
 			COALESCE(v.ventes, 0) ventes, COALESCE(r.achats, 0) achats,
 			COALESCE(r.poids, 0) poids, COALESCE(p.production, 0) production
 		FROM (
-			SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL n MONTH), '%%Y-%%m-01') month_start
+			SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL n MONTH), '%Y-%m-01') month_start
 			FROM (SELECT 0 n UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) x
 		) months
-		LEFT JOIN (SELECT DATE_FORMAT(date_vente, '%%Y-%%m-01') m, SUM(total_ht) ventes FROM `tabVente Huilerie` WHERE docstatus=1 GROUP BY m) v ON v.m=months.month_start
-		LEFT JOIN (SELECT DATE_FORMAT(date_reception, '%%Y-%%m-01') m, SUM(montant_achat) achats, SUM(poids_payable) poids FROM `tabReception Olive` WHERE docstatus=1 GROUP BY m) r ON r.m=months.month_start
-		LEFT JOIN (SELECT DATE_FORMAT(date_production, '%%Y-%%m-01') m, SUM(quantite_produite) production FROM `tabProduction Huilerie` WHERE docstatus=1 GROUP BY m) p ON p.m=months.month_start
+		LEFT JOIN (SELECT DATE_FORMAT(date_vente, '%Y-%m-01') m, SUM(total_ht) ventes FROM `tabVente Huilerie` WHERE docstatus=1 GROUP BY m) v ON v.m=months.month_start
+		LEFT JOIN (SELECT DATE_FORMAT(date_reception, '%Y-%m-01') m, SUM(montant_achat) achats, SUM(poids_payable) poids FROM `tabReception Olive` WHERE docstatus=1 GROUP BY m) r ON r.m=months.month_start
+		LEFT JOIN (SELECT DATE_FORMAT(date_production, '%Y-%m-01') m, SUM(quantite_produite) production FROM `tabProduction Huilerie` WHERE docstatus=1 GROUP BY m) p ON p.m=months.month_start
 		ORDER BY months.month_start
 	""", as_dict=True)
 	return {
