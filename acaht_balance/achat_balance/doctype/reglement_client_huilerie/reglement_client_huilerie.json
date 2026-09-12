@@ -1,0 +1,37 @@
+{
+ "actions":[],"allow_rename":0,"autoname":"naming_series:","doctype":"DocType","engine":"InnoDB",
+ "field_order":["identification_section","naming_series","date_reglement","statut","vente_source","column_break_1","societe","client","pieces_section","pieces","totaux_section","montant_global_du","montant_regle","column_break_2","montant_affecte","reste_global","paiement_section","mode_paiement","compte_paiement","column_break_3","reference_no","reference_date","payment_entry","observations","amended_from"],
+ "fields":[
+  {"fieldname":"identification_section","fieldtype":"Section Break","label":"Identification"},
+  {"fieldname":"naming_series","fieldtype":"Select","label":"Série","options":"REG-CLIENT-.YYYY.-.#####","reqd":1},
+  {"default":"Today","fieldname":"date_reglement","fieldtype":"Date","label":"Date du règlement","reqd":1},
+  {"default":"Brouillon","fieldname":"statut","fieldtype":"Select","in_list_view":1,"label":"Statut","options":"Brouillon\nValidé\nAnnulé","read_only":1},
+  {"fieldname":"vente_source","fieldtype":"Link","label":"Vente à régler","options":"Vente Huilerie","read_only":1},
+  {"fieldname":"column_break_1","fieldtype":"Column Break"},
+  {"fieldname":"societe","fieldtype":"Link","label":"Société","options":"Company","reqd":1},
+  {"fieldname":"client","fieldtype":"Link","in_list_view":1,"label":"Client","options":"Customer","reqd":1},
+  {"fieldname":"pieces_section","fieldtype":"Section Break","label":"Ventes et factures non réglées"},
+  {"fieldname":"pieces","fieldtype":"Table","label":"Pièces à régler","options":"Ligne Reglement Client Huilerie","reqd":1},
+  {"fieldname":"totaux_section","fieldtype":"Section Break","label":"Répartition du règlement"},
+  {"default":"0","fieldname":"montant_global_du","fieldtype":"Currency","label":"Montant global dû","precision":"2","read_only":1},
+  {"default":"0","fieldname":"montant_regle","fieldtype":"Currency","in_list_view":1,"label":"Montant réglé","non_negative":1,"precision":"2","reqd":1},
+  {"fieldname":"column_break_2","fieldtype":"Column Break"},
+  {"default":"0","fieldname":"montant_affecte","fieldtype":"Currency","label":"Montant affecté","precision":"2","read_only":1},
+  {"default":"0","fieldname":"reste_global","fieldtype":"Currency","label":"Reste global après paiement","precision":"2","read_only":1},
+  {"fieldname":"paiement_section","fieldtype":"Section Break","label":"Mode de paiement"},
+  {"fieldname":"mode_paiement","fieldtype":"Link","label":"Mode de paiement","options":"Mode of Payment","reqd":1},
+  {"fieldname":"compte_paiement","fieldtype":"Link","label":"Compte caisse/banque","options":"Account","read_only":1,"reqd":1},
+  {"fieldname":"column_break_3","fieldtype":"Column Break"},
+  {"fieldname":"reference_no","fieldtype":"Data","label":"N° de référence / chèque"},
+  {"fieldname":"reference_date","fieldtype":"Date","label":"Date de référence"},
+  {"fieldname":"payment_entry","fieldtype":"Link","label":"Écriture de paiement","options":"Payment Entry","read_only":1},
+  {"fieldname":"observations","fieldtype":"Small Text","label":"Observations"},
+  {"fieldname":"amended_from","fieldtype":"Link","label":"Modifié depuis","no_copy":1,"options":"Reglement Client Huilerie","print_hide":1,"read_only":1}
+ ],
+ "is_submittable":1,"module":"achat balance","name":"Reglement Client Huilerie",
+ "permissions":[
+  {"create":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Accounts User","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Accounts Manager","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"System Manager","share":1,"submit":1,"write":1}
+ ],"sort_field":"date_reglement","sort_order":"DESC","track_changes":1
+}

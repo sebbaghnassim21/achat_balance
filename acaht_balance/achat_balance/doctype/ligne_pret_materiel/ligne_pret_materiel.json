@@ -1,0 +1,15 @@
+{
+ "actions":[], "doctype":"DocType", "editable_grid":1, "engine":"InnoDB",
+ "field_order":["materiel","categorie","quantite_pretee","quantite_rendue","quantite_perdue","quantite_endommagee","quantite_restante","caution_unitaire","montant_caution"],
+ "fields":[
+  {"fieldname":"materiel","fieldtype":"Link","in_list_view":1,"label":"Matériel","options":"Materiel Huilerie","reqd":1},
+  {"fetch_from":"materiel.categorie","fieldname":"categorie","fieldtype":"Data","label":"Catégorie","read_only":1},
+  {"default":"0","fieldname":"quantite_pretee","fieldtype":"Float","in_list_view":1,"label":"Quantité prêtée","non_negative":1,"reqd":1},
+  {"default":"0","fieldname":"quantite_rendue","fieldtype":"Float","label":"Rendue","read_only":1},
+  {"default":"0","fieldname":"quantite_perdue","fieldtype":"Float","label":"Perdue","read_only":1},
+  {"default":"0","fieldname":"quantite_endommagee","fieldtype":"Float","label":"Endommagée","read_only":1},
+  {"default":"0","fieldname":"quantite_restante","fieldtype":"Float","in_list_view":1,"label":"Restante","read_only":1},
+  {"fetch_from":"materiel.valeur_caution","fieldname":"caution_unitaire","fieldtype":"Currency","label":"Caution/unité","non_negative":1},
+  {"default":"0","fieldname":"montant_caution","fieldtype":"Currency","label":"Montant caution","read_only":1}
+ ], "istable":1, "module":"achat balance", "name":"Ligne Pret Materiel", "permissions":[]
+}
