@@ -148,3 +148,22 @@ def calculate_refundable_deposit(total_material_value, deposit_paid, returned_va
 		return ZERO
 	cumulative = min(deposit_paid, deposit_paid * returned_value / total_material_value)
 	return round_money(max(ZERO, cumulative - already_refunded))
+
+
+def calculate_sale_total(lines):
+	total = ZERO
+	for quantity, rate in lines:
+		quantity = decimal_value(quantity)
+		rate = decimal_value(rate)
+		if quantity <= ZERO or rate < ZERO:
+			raise ValueError("La quantité doit être positive et le prix ne peut pas être négatif.")
+		total += quantity * rate
+	return round_money(total)
+
+
+def calculate_customer_payment(outstanding, amount):
+	outstanding = decimal_value(outstanding)
+	amount = decimal_value(amount)
+	if amount <= ZERO or amount > outstanding:
+		raise ValueError("Le paiement doit être positif et ne pas dépasser le solde de la facture.")
+	return {"paid": round_money(amount), "remaining": round_money(outstanding - amount)}
