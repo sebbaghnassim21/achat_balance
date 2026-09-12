@@ -8,13 +8,31 @@ frappe.ui.form.on("Reception Olive", {
 			}, __("Créer"));
 		}
 	},
+	fournisseur: charger_ancien_solde,
+	societe: charger_ancien_solde,
+	date_reception: charger_ancien_solde,
 	poids_entree: recalculer,
 	poids_sortie: recalculer,
 	dechet_pct: recalculer,
 	prix_unitaire: recalculer,
-	ancien_solde: recalculer,
 	montant_verse: recalculer,
 });
+
+function charger_ancien_solde(frm) {
+	if (!frm.doc.fournisseur || !frm.doc.societe) return;
+	frappe.call({
+		method: "acaht_balance.achat_balance.doctype.reception_olive.reception_olive.get_ancien_solde",
+		args: {
+			fournisseur: frm.doc.fournisseur,
+			societe: frm.doc.societe,
+			reception: frm.doc.name,
+			date_reception: frm.doc.date_reception,
+		},
+		callback(r) {
+			frm.set_value("ancien_solde", flt(r.message)).then(() => recalculer(frm));
+		},
+	});
+}
 
 frappe.ui.form.on("Ligne Emballage Reception", {
 	article_emballage(frm, cdt, cdn) {

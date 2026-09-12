@@ -37,7 +37,7 @@
   {"default":"0","fieldname":"prix_unitaire","fieldtype":"Currency","label":"Prix par unité","non_negative":1,"precision":"2","reqd":1},
   {"default":"0","fieldname":"montant_achat","fieldtype":"Currency","label":"Montant de l'achat","precision":"2","read_only":1},
   {"fieldname":"column_break_3","fieldtype":"Column Break"},
-  {"default":"0","fieldname":"ancien_solde","fieldtype":"Currency","label":"Ancien solde","precision":"2"},
+  {"default":"0","description":"Repris automatiquement depuis la dernière réception validée de ce fournisseur.","fieldname":"ancien_solde","fieldtype":"Currency","label":"Ancien solde","precision":"2","read_only":1},
   {"default":"0","fieldname":"montant_verse","fieldtype":"Currency","label":"Montant versé","non_negative":1,"precision":"2"},
   {"default":"0","fieldname":"nouveau_solde","fieldtype":"Currency","label":"Nouveau solde","precision":"2","read_only":1},
   {"fieldname":"stock_section","fieldtype":"Section Break","label":"Stock et transport"},

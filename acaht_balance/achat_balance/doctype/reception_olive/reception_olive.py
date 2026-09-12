@@ -8,6 +8,9 @@ from acaht_balance.achat_balance.calculations import calculate_packaging_tare, c
 
 class ReceptionOlive(Document):
 	def validate(self):
+		self.ancien_solde = get_ancien_solde(
+			self.fournisseur, self.societe, self.name, self.date_reception,
+		)
 		for row in self.emballages:
 			if not flt(row.poids_unitaire):
 				row.poids_unitaire = flt(frappe.db.get_value("Item", row.article_emballage, "weight_per_unit"))
@@ -78,3 +81,27 @@ class ReceptionOlive(Document):
 		doc.insert()
 		self.db_set("purchase_receipt", doc.name)
 		return doc.name
+
+
+@frappe.whitelist()
+def get_ancien_solde(fournisseur, societe, reception=None, date_reception=None):
+	"""Return the last submitted operational balance for this supplier."""
+	if not fournisseur or not societe:
+		return 0
+	filters = {
+		"fournisseur": fournisseur,
+		"societe": societe,
+		"docstatus": 1,
+	}
+	if reception:
+		filters["name"] = ["!=", reception]
+	if date_reception:
+		filters["date_reception"] = ["<=", date_reception]
+	previous = frappe.get_all(
+		"Reception Olive",
+		filters=filters,
+		fields=["nouveau_solde"],
+		order_by="date_reception desc, creation desc",
+		limit=1,
+	)
+	return flt(previous[0].nouveau_solde) if previous else 0
