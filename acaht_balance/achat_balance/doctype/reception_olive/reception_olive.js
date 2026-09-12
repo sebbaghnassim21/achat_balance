@@ -1,12 +1,6 @@
 frappe.ui.form.on("Reception Olive", {
 	refresh(frm) {
-		if (frm.doc.docstatus === 1 && !frm.doc.purchase_receipt) {
-			frm.add_custom_button(__("Créer la réception d'achat"), () => {
-				frm.call("creer_reception_achat").then((r) => {
-					if (r.message) frappe.set_route("Form", "Purchase Receipt", r.message);
-				});
-			}, __("Créer"));
-		}
+		// Les documents d'achat sont créés et validés automatiquement à la soumission.
 	},
 	fournisseur: charger_ancien_solde,
 	societe: charger_ancien_solde,

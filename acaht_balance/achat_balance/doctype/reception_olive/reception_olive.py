@@ -53,58 +53,95 @@ class ReceptionOlive(Document):
 	def before_submit(self):
 		self.statut_pesee = "Validée"
 
+	def on_submit(self):
+		self._creer_documents_achat()
+
 	def on_cancel(self):
+		if self.purchase_invoice:
+			invoice = frappe.get_doc("Purchase Invoice", self.purchase_invoice)
+			if invoice.docstatus == 1:
+				invoice.cancel()
+		if self.purchase_receipt:
+			receipt = frappe.get_doc("Purchase Receipt", self.purchase_receipt)
+			if receipt.docstatus == 1:
+				receipt.cancel()
 		self.statut_pesee = "Annulée"
 
 	@frappe.whitelist()
 	def creer_reception_achat(self):
 		if self.docstatus != 1:
 			frappe.throw(_("Validez la réception d'olives avant de créer la réception d'achat."))
-		if self.purchase_receipt:
-			return self.purchase_receipt
+		self._creer_documents_achat()
+		return self.purchase_receipt
 
-		doc = frappe.get_doc({
-			"doctype": "Purchase Receipt",
-			"supplier": self.fournisseur,
-			"company": self.societe,
-			"posting_date": self.date_reception,
-			"set_warehouse": self.entrepot_olives,
-			"remarks": _("Créé depuis la réception d'olives {0}").format(self.name),
-			"items": [{
-				"item_code": self.article_olives,
-				"qty": self.poids_payable,
-				"uom": self.unite,
-				"rate": self.prix_unitaire,
-				"warehouse": self.entrepot_olives,
-			}],
-		})
-		doc.insert()
-		self.db_set("purchase_receipt", doc.name)
-		return doc.name
+	def _creer_documents_achat(self):
+		if not self.purchase_receipt:
+			doc = frappe.get_doc({
+				"doctype": "Purchase Receipt",
+				"supplier": self.fournisseur,
+				"company": self.societe,
+				"posting_date": self.date_reception,
+				"set_warehouse": self.entrepot_olives,
+				"remarks": _("Créé automatiquement depuis la réception d'olives {0}").format(self.name),
+				"items": [{
+					"item_code": self.article_olives,
+					"qty": self.poids_payable,
+					"uom": self.unite,
+					"rate": self.prix_unitaire,
+					"warehouse": self.entrepot_olives,
+				}],
+			})
+			doc.insert()
+			doc.submit()
+			self.db_set("purchase_receipt", doc.name)
+		else:
+			doc = frappe.get_doc("Purchase Receipt", self.purchase_receipt)
+			if doc.docstatus == 0:
+				doc.submit()
+
+		if not self.purchase_invoice:
+			from erpnext.stock.doctype.purchase_receipt.purchase_receipt import make_purchase_invoice
+
+			invoice = make_purchase_invoice(doc.name)
+			invoice.posting_date = self.date_reception
+			invoice.remarks = _("Créée automatiquement depuis la réception d'olives {0}").format(self.name)
+			invoice.insert()
+			invoice.submit()
+			self.db_set("purchase_invoice", invoice.name)
 
 
 @frappe.whitelist()
 def get_ancien_solde(fournisseur, societe, reception=None, date_reception=None):
-	"""Return the last submitted operational balance for this supplier."""
+	"""Return purchases minus all submitted supplier settlements."""
 	if not fournisseur or not societe:
 		return 0
-	filters = {
-		"fournisseur": fournisseur,
-		"societe": societe,
-		"docstatus": 1,
-	}
+	conditions = ["fournisseur=%s", "societe=%s", "docstatus=1"]
+	values = [fournisseur, societe]
 	if reception:
-		filters["name"] = ["!=", reception]
+		conditions.append("name!=%s")
+		values.append(reception)
 	if date_reception:
-		filters["date_reception"] = ["<=", date_reception]
-	previous = frappe.get_all(
-		"Reception Olive",
-		filters=filters,
-		fields=["nouveau_solde"],
-		order_by="date_reception desc, creation desc",
-		limit=1,
-	)
-	return flt(previous[0].nouveau_solde) if previous else 0
+		conditions.append("date_reception<=%s")
+		values.append(date_reception)
+	purchases = frappe.db.sql(
+		f"""select coalesce(sum(montant_achat - montant_verse), 0)
+		from `tabReception Olive` where {' and '.join(conditions)}""",
+		values,
+	)[0][0]
+	settlements = 0
+	if frappe.db.exists("DocType", "Reglement Fournisseur Huilerie"):
+		settlement_conditions = ["fournisseur=%s", "societe=%s", "docstatus=1"]
+		settlement_values = [fournisseur, societe]
+		if date_reception:
+			settlement_conditions.append("date_reglement<=%s")
+			settlement_values.append(date_reception)
+		settlements = frappe.db.sql(
+			f"""select coalesce(sum(montant_regle), 0)
+			from `tabReglement Fournisseur Huilerie`
+			where {' and '.join(settlement_conditions)}""",
+			settlement_values,
+		)[0][0]
+	return flt(purchases) - flt(settlements)
 
 
 @frappe.whitelist()
