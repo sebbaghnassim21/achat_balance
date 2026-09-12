@@ -167,3 +167,19 @@ def calculate_customer_payment(outstanding, amount):
 	if amount <= ZERO or amount > outstanding:
 		raise ValueError("Le paiement doit être positif et ne pas dépasser le solde de la facture.")
 	return {"paid": round_money(amount), "remaining": round_money(outstanding - amount)}
+
+
+def allocate_customer_payment(outstandings, amount):
+	amount = decimal_value(amount)
+	values = [decimal_value(value) for value in outstandings]
+	if amount <= ZERO:
+		raise ValueError("Le montant réglé doit être supérieur à zéro.")
+	if amount > sum(values, ZERO):
+		raise ValueError("Le montant réglé ne peut pas dépasser le montant global dû.")
+	remaining = amount
+	allocations = []
+	for outstanding in values:
+		allocated = min(outstanding, remaining)
+		allocations.append(round_money(allocated))
+		remaining -= allocated
+	return allocations

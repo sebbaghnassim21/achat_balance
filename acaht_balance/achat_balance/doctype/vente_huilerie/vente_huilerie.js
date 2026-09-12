@@ -6,7 +6,15 @@ frappe.ui.form.on("Vente Huilerie", {
 		if (frm.doc.docstatus !== 1) return;
 		if (!frm.doc.bon_livraison) bouton(frm, "Créer le bon de livraison", "creer_bon_livraison");
 		if (frm.doc.bon_livraison && !frm.doc.facture_vente) bouton(frm, "Créer la facture de vente", "creer_facture_vente");
-		if (frm.doc.facture_vente && flt(frm.doc.montant_a_encaisser) > 0) bouton(frm, "Encaisser le client", "encaisser_client");
+		if (frm.doc.facture_vente && frm.doc.statut !== "Payée") {
+			frm.add_custom_button(__("Nouveau règlement"), () => {
+				frappe.new_doc("Reglement Client Huilerie", {
+					vente_source: frm.doc.name,
+					client: frm.doc.client,
+					societe: frm.doc.societe,
+				});
+			}, __("Règlement"));
+		}
 		if (frm.doc.bon_livraison) {
 			frm.add_custom_button(__("Imprimer le bon de livraison"), () => {
 				ouvrir_impression("Delivery Note", frm.doc.bon_livraison, "Bon de Livraison Huilerie");
