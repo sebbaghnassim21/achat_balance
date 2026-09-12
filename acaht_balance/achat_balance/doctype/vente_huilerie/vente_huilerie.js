@@ -11,7 +11,7 @@ frappe.ui.form.on("Vente Huilerie", {
 	mode_paiement(frm) {
 		if (!frm.doc.mode_paiement || !frm.doc.societe) return;
 		frappe.call({
-			method: "acaht_balance.achat_balance.doctype.reglement_fournisseur_huilerie.reglement_fournisseur_huilerie.get_compte_mode_paiement",
+			method: "acaht_balance.achat_balance.doctype.vente_huilerie.vente_huilerie.get_compte_mode_paiement_vente",
 			args: {mode_paiement: frm.doc.mode_paiement, societe: frm.doc.societe},
 			callback(r) { frm.set_value("compte_paiement", r.message); },
 		});

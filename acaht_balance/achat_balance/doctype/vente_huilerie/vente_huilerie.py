@@ -3,24 +3,17 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt
 
-from acaht_balance.achat_balance.calculations import calculate_customer_payment, calculate_sale_total
-from acaht_balance.achat_balance.doctype.reglement_fournisseur_huilerie.reglement_fournisseur_huilerie import get_compte_mode_paiement
-
-
 class VenteHuilerie(Document):
 	def validate(self):
 		if not self.articles:
 			frappe.throw(_("Ajoutez au moins un article."))
 		for row in self.articles:
+			if flt(row.quantite) <= 0 or flt(row.prix_unitaire) < 0:
+				frappe.throw(_("La quantité doit être positive et le prix ne peut pas être négatif."))
 			row.montant = flt(row.quantite) * flt(row.prix_unitaire)
-		try:
-			self.total_ht = float(calculate_sale_total(
-				[(row.quantite, row.prix_unitaire) for row in self.articles],
-			))
-		except ValueError as exc:
-			frappe.throw(_(str(exc)))
+		self.total_ht = sum(flt(row.montant) for row in self.articles)
 		if self.mode_paiement and not self.compte_paiement:
-			self.compte_paiement = get_compte_mode_paiement(self.mode_paiement, self.societe)
+			self.compte_paiement = _get_compte_mode_paiement(self.mode_paiement, self.societe)
 
 	def before_submit(self):
 		self.statut = "Confirmée"
@@ -80,13 +73,11 @@ class VenteHuilerie(Document):
 			frappe.throw(_("Créez d'abord la facture de vente."))
 		amount = flt(self.montant_a_encaisser)
 		invoice = frappe.get_doc("Sales Invoice", self.facture_vente)
-		try:
-			calculate_customer_payment(invoice.outstanding_amount, amount)
-		except ValueError as exc:
-			frappe.throw(_(str(exc)))
+		if amount <= 0 or amount > flt(invoice.outstanding_amount):
+			frappe.throw(_("Le paiement doit être positif et ne pas dépasser le solde de la facture."))
 		if not self.mode_paiement:
 			frappe.throw(_("Choisissez le mode de paiement."))
-		account = self.compte_paiement or get_compte_mode_paiement(self.mode_paiement, self.societe)
+		account = self.compte_paiement or _get_compte_mode_paiement(self.mode_paiement, self.societe)
 		from erpnext.accounts.party import get_party_account
 		party_account = get_party_account("Customer", self.client, self.societe)
 		payment = frappe.get_doc({
@@ -106,3 +97,19 @@ class VenteHuilerie(Document):
 		self.db_set("montant_a_encaisser", invoice.outstanding_amount)
 		self.db_set("statut", "Payée" if not flt(invoice.outstanding_amount) else "Partiellement payée")
 		return payment.name
+
+
+def _get_compte_mode_paiement(mode_paiement, societe):
+	account = frappe.db.get_value(
+		"Mode of Payment Account",
+		{"parent": mode_paiement, "parenttype": "Mode of Payment", "company": societe},
+		"default_account",
+	)
+	if not account:
+		frappe.throw(_("Aucun compte par défaut n'est configuré pour ce mode de paiement."))
+	return account
+
+
+@frappe.whitelist()
+def get_compte_mode_paiement_vente(mode_paiement, societe):
+	return _get_compte_mode_paiement(mode_paiement, societe)
