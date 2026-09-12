@@ -7,6 +7,16 @@ frappe.ui.form.on("Vente Huilerie", {
 		if (!frm.doc.bon_livraison) bouton(frm, "Créer le bon de livraison", "creer_bon_livraison");
 		if (frm.doc.bon_livraison && !frm.doc.facture_vente) bouton(frm, "Créer la facture de vente", "creer_facture_vente");
 		if (frm.doc.facture_vente && flt(frm.doc.montant_a_encaisser) > 0) bouton(frm, "Encaisser le client", "encaisser_client");
+		if (frm.doc.bon_livraison) {
+			frm.add_custom_button(__("Imprimer le bon de livraison"), () => {
+				ouvrir_impression("Delivery Note", frm.doc.bon_livraison, "Bon de Livraison Huilerie");
+			}, __("Imprimer"));
+		}
+		if (frm.doc.facture_vente) {
+			frm.add_custom_button(__("Imprimer la facture"), () => {
+				ouvrir_impression("Sales Invoice", frm.doc.facture_vente, "Facture de Vente Huilerie");
+			}, __("Imprimer"));
+		}
 	},
 	mode_paiement(frm) {
 		if (!frm.doc.mode_paiement || !frm.doc.societe) return;
@@ -28,4 +38,13 @@ function bouton(frm, label, method) {
 	frm.add_custom_button(__(label), () => frm.call(method).then((r) => {
 		if (r.message) frm.reload_doc();
 	}), __("Créer"));
+}
+function ouvrir_impression(doctype, name, format) {
+	const params = new URLSearchParams({
+		doctype: doctype,
+		name: name,
+		format: format,
+		no_letterhead: "0",
+	});
+	window.open("/printview?" + params.toString(), "_blank");
 }
