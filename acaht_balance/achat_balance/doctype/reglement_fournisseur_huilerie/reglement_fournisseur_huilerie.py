@@ -8,6 +8,8 @@ from acaht_balance.achat_balance.doctype.reception_olive.reception_olive import 
 
 class ReglementFournisseurHuilerie(Document):
 	def validate(self):
+		if self.mode_paiement and not self.compte_paiement:
+			self.compte_paiement = get_compte_mode_paiement(self.mode_paiement, self.societe)
 		if flt(self.montant_regle) <= 0:
 			frappe.throw(_("Le montant réglé doit être supérieur à zéro."))
 		self.solde_avant = get_ancien_solde(
@@ -62,3 +64,19 @@ class ReglementFournisseurHuilerie(Document):
 		doc.submit()
 		self.db_set("payment_entry", doc.name)
 		return doc.name
+
+
+@frappe.whitelist()
+def get_compte_mode_paiement(mode_paiement, societe):
+	if not mode_paiement or not societe:
+		return None
+	account = frappe.db.get_value(
+		"Mode of Payment Account",
+		{"parent": mode_paiement, "parenttype": "Mode of Payment", "company": societe},
+		"default_account",
+	)
+	if not account:
+		frappe.throw(_(
+			"Aucun compte par défaut n'est configuré pour le mode de paiement {0} et la société {1}."
+		).format(mode_paiement, societe))
+	return account

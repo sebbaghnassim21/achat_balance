@@ -13,9 +13,19 @@ frappe.ui.form.on("Reglement Fournisseur Huilerie", {
 	},
 	fournisseur: charger_solde,
 	societe: charger_solde,
+	mode_paiement: charger_compte_paiement,
 	date_reglement: charger_solde,
 	montant_regle: calculer_solde_apres,
 });
+
+function charger_compte_paiement(frm) {
+	if (!frm.doc.mode_paiement || !frm.doc.societe) return;
+	frappe.call({
+		method: "acaht_balance.achat_balance.doctype.reglement_fournisseur_huilerie.reglement_fournisseur_huilerie.get_compte_mode_paiement",
+		args: { mode_paiement: frm.doc.mode_paiement, societe: frm.doc.societe },
+		callback(r) { frm.set_value("compte_paiement", r.message); },
+	});
+}
 
 function charger_solde(frm) {
 	if (!frm.doc.fournisseur || !frm.doc.societe) return;

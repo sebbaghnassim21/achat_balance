@@ -13,7 +13,17 @@ frappe.ui.form.on("Pret Materiel", {
 	},
 	fournisseur: charger_credit,
 	societe: charger_credit,
+	mode_paiement_caution: charger_compte_caution,
 });
+
+function charger_compte_caution(frm) {
+	if (!frm.doc.mode_paiement_caution || !frm.doc.societe) return;
+	frappe.call({
+		method: "acaht_balance.achat_balance.doctype.reglement_fournisseur_huilerie.reglement_fournisseur_huilerie.get_compte_mode_paiement",
+		args: { mode_paiement: frm.doc.mode_paiement_caution, societe: frm.doc.societe },
+		callback(r) { frm.set_value("compte_caution", r.message); },
+	});
+}
 
 function charger_credit(frm) {
 	if (!frm.doc.fournisseur || !frm.doc.societe) return;

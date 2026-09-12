@@ -4,10 +4,16 @@ from frappe.model.document import Document
 from frappe.utils import flt, getdate
 
 from acaht_balance.achat_balance.calculations import calculate_refundable_deposit
+from acaht_balance.achat_balance.doctype.reglement_fournisseur_huilerie.reglement_fournisseur_huilerie import get_compte_mode_paiement
 
 
 class RetourMateriel(Document):
 	def validate(self):
+		if (
+			self.traitement_caution == "Rembourser en espèces/banque"
+			and self.mode_paiement_caution and not self.compte_caution
+		):
+			self.compte_caution = get_compte_mode_paiement(self.mode_paiement_caution, self.societe)
 		loan = frappe.get_doc("Pret Materiel", self.pret_materiel)
 		if loan.docstatus != 1:
 			frappe.throw(_("Le prêt doit être validé."))

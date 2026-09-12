@@ -5,10 +5,13 @@ from frappe.utils import flt, getdate
 
 from acaht_balance.achat_balance.calculations import calculate_loan_line, calculate_supplier_settlement
 from acaht_balance.achat_balance.doctype.reception_olive.reception_olive import get_ancien_solde
+from acaht_balance.achat_balance.doctype.reglement_fournisseur_huilerie.reglement_fournisseur_huilerie import get_compte_mode_paiement
 
 
 class PretMateriel(Document):
 	def validate(self):
+		if flt(self.caution_versee) and self.mode_paiement_caution and not self.compte_caution:
+			self.compte_caution = get_compte_mode_paiement(self.mode_paiement_caution, self.societe)
 		self.dette_fournisseur = get_ancien_solde(
 			self.fournisseur, self.societe, pret_materiel=self.name,
 		)
