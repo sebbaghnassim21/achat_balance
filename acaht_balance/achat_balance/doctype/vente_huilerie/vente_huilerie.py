@@ -12,11 +12,24 @@ class VenteHuilerie(Document):
 				frappe.throw(_("La quantité doit être positive et le prix ne peut pas être négatif."))
 			row.montant = flt(row.quantite) * flt(row.prix_unitaire)
 		self.total_ht = sum(flt(row.montant) for row in self.articles)
+		if flt(self.montant_a_encaisser) > flt(self.total_ht):
+			frappe.throw(_("Le montant à encaisser ne peut pas dépasser le total de la vente."))
+		if flt(self.montant_a_encaisser) > 0 and not self.mode_paiement:
+			frappe.throw(_("Choisissez le mode de paiement pour encaisser le client."))
 		if self.mode_paiement and not self.compte_paiement:
 			self.compte_paiement = _get_compte_mode_paiement(self.mode_paiement, self.societe)
 
 	def before_submit(self):
 		self.statut = "Confirmée"
+
+	def on_submit(self):
+		montant_demande = flt(self.montant_a_encaisser)
+		self.creer_bon_livraison()
+		self.creer_facture_vente()
+		if montant_demande > 0:
+			self.db_set("montant_a_encaisser", montant_demande)
+			self.montant_a_encaisser = montant_demande
+			self.encaisser_client()
 
 	def on_cancel(self):
 		if self.facture_vente:

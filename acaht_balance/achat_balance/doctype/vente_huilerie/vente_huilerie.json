@@ -18,7 +18,7 @@
   {"fieldname":"bon_livraison","fieldtype":"Link","label":"Bon de livraison","options":"Delivery Note","read_only":1},
   {"fieldname":"facture_vente","fieldtype":"Link","label":"Facture de vente","options":"Sales Invoice","read_only":1},
   {"fieldname":"paiement_section","fieldtype":"Section Break","label":"Paiement client"},
-  {"default":"0","description":"Permet un paiement total ou partiel","fieldname":"montant_a_encaisser","fieldtype":"Currency","label":"Montant à encaisser","non_negative":1,"precision":"2"},
+  {"default":"0","description":"Si un montant est saisi avant validation, le paiement total ou partiel sera créé automatiquement. Laissez 0 pour une vente à crédit.","fieldname":"montant_a_encaisser","fieldtype":"Currency","label":"Règlement reçu à la vente","non_negative":1,"precision":"2"},
   {"fieldname":"mode_paiement","fieldtype":"Link","label":"Mode de paiement","options":"Mode of Payment"},
   {"fieldname":"compte_paiement","fieldtype":"Link","label":"Compte caisse/banque","options":"Account","read_only":1},
   {"fieldname":"column_break_3","fieldtype":"Column Break"},
