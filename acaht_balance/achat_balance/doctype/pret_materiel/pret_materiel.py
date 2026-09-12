@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt
+from frappe.utils import flt, getdate
 
 from acaht_balance.achat_balance.calculations import calculate_loan_line, calculate_supplier_settlement
 from acaht_balance.achat_balance.doctype.reception_olive.reception_olive import get_ancien_solde
@@ -12,7 +12,7 @@ class PretMateriel(Document):
 		self.dette_fournisseur = get_ancien_solde(
 			self.fournisseur, self.societe, pret_materiel=self.name,
 		)
-		if self.date_retour_prevue and self.date_retour_prevue < self.date_pret:
+		if self.date_retour_prevue and getdate(self.date_retour_prevue) < getdate(self.date_pret):
 			frappe.throw(_("La date de retour prévue ne peut pas précéder la date du prêt."))
 		if not self.materiels:
 			frappe.throw(_("Ajoutez au moins un matériel à prêter."))

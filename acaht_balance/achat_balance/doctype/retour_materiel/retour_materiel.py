@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt
+from frappe.utils import flt, getdate
 
 
 class RetourMateriel(Document):
@@ -9,7 +9,7 @@ class RetourMateriel(Document):
 		loan = frappe.get_doc("Pret Materiel", self.pret_materiel)
 		if loan.docstatus != 1:
 			frappe.throw(_("Le prêt doit être validé."))
-		if self.date_retour < loan.date_pret:
+		if getdate(self.date_retour) < getdate(loan.date_pret):
 			frappe.throw(_("La date du retour ne peut pas précéder la date du prêt."))
 		if self.fournisseur != loan.fournisseur or self.societe != loan.societe:
 			frappe.throw(_("Le fournisseur et la société doivent correspondre au prêt."))
