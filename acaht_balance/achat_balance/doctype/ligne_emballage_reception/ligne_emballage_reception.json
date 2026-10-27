@@ -1,0 +1,18 @@
+{
+ "actions": [],
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["article_emballage", "quantite", "poids_unitaire", "unite_poids", "poids_total"],
+ "fields": [
+  {"fieldname":"article_emballage","fieldtype":"Link","in_list_view":1,"label":"Article emballage","options":"Item","reqd":1},
+  {"default":"0","fieldname":"quantite","fieldtype":"Float","in_list_view":1,"label":"Quantité","non_negative":1,"precision":"3","reqd":1},
+  {"default":"0","description":"Repris automatiquement depuis le poids par unité de l'article.","fieldname":"poids_unitaire","fieldtype":"Float","in_list_view":1,"label":"Poids unitaire","non_negative":1,"precision":"3","reqd":1},
+  {"fetch_from":"article_emballage.weight_uom","fieldname":"unite_poids","fieldtype":"Link","label":"Unité de poids","options":"UOM"},
+  {"default":"0","fieldname":"poids_total","fieldtype":"Float","in_list_view":1,"label":"Poids total","precision":"3","read_only":1}
+ ],
+ "istable": 1,
+ "module": "achat balance",
+ "name": "Ligne Emballage Reception",
+ "permissions": []
+}

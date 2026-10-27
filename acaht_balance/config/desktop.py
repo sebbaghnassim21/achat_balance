@@ -4,9 +4,9 @@ def get_data():
 	return [
 		{
 			"module_name": "achat balance",
-			"color": "grey",
-			"icon": "octicon octicon-file-directory",
+			"color": "green",
+			"icon": "octicon octicon-package",
 			"type": "module",
-			"label": _("achat balance")
+			"label": _("Huilerie & Oliveraie")
 		}
 	]

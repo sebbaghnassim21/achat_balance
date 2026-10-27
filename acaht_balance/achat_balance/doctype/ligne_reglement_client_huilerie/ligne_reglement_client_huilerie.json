@@ -1,0 +1,14 @@
+{
+ "doctype":"DocType","editable_grid":1,"engine":"InnoDB","istable":1,"module":"achat balance","name":"Ligne Reglement Client Huilerie",
+ "field_order":["vente_huilerie","facture_vente","date_vente","montant_facture","deja_regle","reste_avant","montant_affecte","reste_apres"],
+ "fields":[
+  {"fieldname":"vente_huilerie","fieldtype":"Link","in_list_view":1,"label":"Vente Huilerie et Oliveraie","options":"Vente Huilerie","read_only":1,"reqd":1},
+  {"fieldname":"facture_vente","fieldtype":"Link","in_list_view":1,"label":"Facture","options":"Sales Invoice","read_only":1,"reqd":1},
+  {"fieldname":"date_vente","fieldtype":"Date","label":"Date","read_only":1},
+  {"default":"0","fieldname":"montant_facture","fieldtype":"Currency","label":"Montant facture","precision":"2","read_only":1},
+  {"default":"0","fieldname":"deja_regle","fieldtype":"Currency","label":"Déjà réglé","precision":"2","read_only":1},
+  {"default":"0","fieldname":"reste_avant","fieldtype":"Currency","in_list_view":1,"label":"Reste avant","precision":"2","read_only":1},
+  {"default":"0","fieldname":"montant_affecte","fieldtype":"Currency","in_list_view":1,"label":"Montant affecté","precision":"2","read_only":1},
+  {"default":"0","fieldname":"reste_apres","fieldtype":"Currency","label":"Reste après","precision":"2","read_only":1}
+ ],"permissions":[]
+}

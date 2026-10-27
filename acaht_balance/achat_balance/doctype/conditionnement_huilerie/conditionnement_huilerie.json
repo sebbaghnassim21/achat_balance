@@ -1,0 +1,50 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "naming_series:",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "identification_section", "naming_series", "date_conditionnement", "type_produit", "statut", "column_break_1", "societe", "lot_source", "responsable",
+  "source_section", "article_source", "quantite_source", "unite_source", "column_break_2", "entrepot_source", "observations",
+  "lignes_section", "lignes", "resultats_section", "quantite_conditionnee", "pertes", "column_break_3", "stock_entry", "amended_from"
+ ],
+ "fields": [
+  {"fieldname":"identification_section","fieldtype":"Section Break","label":"Identification"},
+  {"fieldname":"naming_series","fieldtype":"Select","label":"Série","options":"COND-OL-.YYYY.-.#####","reqd":1},
+  {"default":"Today","fieldname":"date_conditionnement","fieldtype":"Date","label":"Date de conditionnement","reqd":1},
+  {"fieldname":"type_produit","fieldtype":"Select","label":"Produit","options":"Huile d'olive\nOlives de table","reqd":1},
+  {"default":"Brouillon","fieldname":"statut","fieldtype":"Select","label":"Statut","options":"Brouillon\nTerminé\nAnnulé","read_only":1},
+  {"fieldname":"column_break_1","fieldtype":"Column Break"},
+  {"fieldname":"societe","fieldtype":"Link","label":"Société","options":"Company","reqd":1},
+  {"description":"Lot ERPNext ou référence interne du produit vrac","fieldname":"lot_source","fieldtype":"Data","label":"Lot source","reqd":1},
+  {"fieldname":"responsable","fieldtype":"Link","label":"Responsable","options":"User"},
+  {"fieldname":"source_section","fieldtype":"Section Break","label":"Produit vrac consommé"},
+  {"fieldname":"article_source","fieldtype":"Link","label":"Article vrac","options":"Item","reqd":1},
+  {"default":"0","fieldname":"quantite_source","fieldtype":"Float","label":"Quantité disponible","non_negative":1,"precision":"3","reqd":1},
+  {"fieldname":"unite_source","fieldtype":"Link","label":"Unité du vrac","options":"UOM","reqd":1},
+  {"fieldname":"column_break_2","fieldtype":"Column Break"},
+  {"fieldname":"entrepot_source","fieldtype":"Link","label":"Entrepôt source","options":"Warehouse","reqd":1},
+  {"fieldname":"observations","fieldtype":"Small Text","label":"Observations"},
+  {"fieldname":"lignes_section","fieldtype":"Section Break","label":"Articles conditionnés"},
+  {"fieldname":"lignes","fieldtype":"Table","label":"Formats de vente","options":"Ligne Conditionnement","reqd":1},
+  {"fieldname":"resultats_section","fieldtype":"Section Break","label":"Résultats"},
+  {"default":"0","fieldname":"quantite_conditionnee","fieldtype":"Float","label":"Quantité totale conditionnée","precision":"3","read_only":1},
+  {"default":"0","fieldname":"pertes","fieldtype":"Float","label":"Pertes de conditionnement","precision":"3","read_only":1},
+  {"fieldname":"column_break_3","fieldtype":"Column Break"},
+  {"fieldname":"stock_entry","fieldtype":"Link","label":"Mouvement de stock","options":"Stock Entry","read_only":1},
+  {"fieldname":"amended_from","fieldtype":"Link","label":"Modifié depuis","no_copy":1,"options":"Conditionnement Huilerie","print_hide":1,"read_only":1}
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "module": "achat balance",
+ "name": "Conditionnement Huilerie",
+ "permissions": [
+  {"create":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Stock User","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Stock Manager","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"System Manager","share":1,"submit":1,"write":1}
+ ],
+ "sort_field": "date_conditionnement",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -1,0 +1,11 @@
+{
+ "actions":[], "doctype":"DocType", "editable_grid":1, "engine":"InnoDB",
+ "field_order":["materiel","quantite_rendue","quantite_perdue","quantite_endommagee","observation"],
+ "fields":[
+  {"fieldname":"materiel","fieldtype":"Link","in_list_view":1,"label":"Matériel","options":"Materiel Huilerie","reqd":1},
+  {"default":"0","fieldname":"quantite_rendue","fieldtype":"Float","in_list_view":1,"label":"Rendue","non_negative":1},
+  {"default":"0","fieldname":"quantite_perdue","fieldtype":"Float","label":"Perdue","non_negative":1},
+  {"default":"0","fieldname":"quantite_endommagee","fieldtype":"Float","label":"Endommagée","non_negative":1},
+  {"fieldname":"observation","fieldtype":"Data","label":"Observation"}
+ ], "istable":1, "module":"achat balance", "name":"Ligne Retour Materiel", "permissions":[]
+}

@@ -1,0 +1,21 @@
+{
+ "actions": [],
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["article_fini", "nombre_unites", "unite_vente", "contenance", "unite_contenu", "quantite_conditionnee", "entrepot_destination", "cout_unitaire"],
+ "fields": [
+  {"fieldname":"article_fini","fieldtype":"Link","in_list_view":1,"label":"Article conditionné","options":"Item","reqd":1},
+  {"default":"0","fieldname":"nombre_unites","fieldtype":"Float","in_list_view":1,"label":"Nombre d'unités","non_negative":1,"precision":"3","reqd":1},
+  {"fieldname":"unite_vente","fieldtype":"Link","label":"Unité de vente","options":"UOM","reqd":1},
+  {"default":"0","description":"Quantité de produit vrac contenue dans une unité vendable","fieldname":"contenance","fieldtype":"Float","in_list_view":1,"label":"Contenance","non_negative":1,"precision":"3","reqd":1},
+  {"fieldname":"unite_contenu","fieldtype":"Link","label":"Unité du contenu","options":"UOM","reqd":1},
+  {"default":"0","fieldname":"quantite_conditionnee","fieldtype":"Float","label":"Quantité conditionnée","precision":"3","read_only":1},
+  {"fieldname":"entrepot_destination","fieldtype":"Link","label":"Entrepôt destination","options":"Warehouse","reqd":1},
+  {"default":"0","fieldname":"cout_unitaire","fieldtype":"Currency","label":"Coût par unité","non_negative":1,"precision":"2"}
+ ],
+ "istable": 1,
+ "module": "achat balance",
+ "name": "Ligne Conditionnement",
+ "permissions": []
+}

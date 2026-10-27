@@ -1,0 +1,35 @@
+{
+ "actions":[],"allow_rename":0,"autoname":"naming_series:","doctype":"DocType","engine":"InnoDB",
+ "field_order":["identification_section","naming_series","date_vente","statut","column_break_1","societe","client","entrepot","articles_section","articles","total_section","total_ht","column_break_2","bon_livraison","facture_vente","paiement_section","montant_a_encaisser","mode_paiement","compte_paiement","column_break_3","paiement_client","observations","amended_from"],
+ "fields":[
+  {"fieldname":"identification_section","fieldtype":"Section Break","label":"Identification"},
+  {"fieldname":"naming_series","fieldtype":"Select","label":"Série","options":"VENTE-HUILE-.YYYY.-.#####","reqd":1},
+  {"default":"Today","fieldname":"date_vente","fieldtype":"Date","label":"Date de vente","reqd":1},
+  {"default":"Brouillon","fieldname":"statut","fieldtype":"Select","in_list_view":1,"label":"Statut","options":"Brouillon\nConfirmée\nLivrée\nFacturée\nPayée\nPartiellement payée\nAnnulée","read_only":1},
+  {"fieldname":"column_break_1","fieldtype":"Column Break"},
+  {"fieldname":"societe","fieldtype":"Link","label":"Société","options":"Company","reqd":1},
+  {"fieldname":"client","fieldtype":"Link","in_list_view":1,"label":"Client","options":"Customer","reqd":1},
+  {"fieldname":"entrepot","fieldtype":"Link","label":"Entrepôt de vente","options":"Warehouse","reqd":1},
+  {"fieldname":"articles_section","fieldtype":"Section Break","label":"Articles vendus"},
+  {"fieldname":"articles","fieldtype":"Table","label":"Articles","options":"Ligne Vente Huilerie","reqd":1},
+  {"fieldname":"total_section","fieldtype":"Section Break","label":"Total et documents"},
+  {"default":"0","fieldname":"total_ht","fieldtype":"Currency","label":"Total HT","precision":"2","read_only":1},
+  {"fieldname":"column_break_2","fieldtype":"Column Break"},
+  {"fieldname":"bon_livraison","fieldtype":"Link","label":"Bon de livraison","options":"Delivery Note","read_only":1},
+  {"fieldname":"facture_vente","fieldtype":"Link","label":"Facture de vente","options":"Sales Invoice","read_only":1},
+  {"fieldname":"paiement_section","fieldtype":"Section Break","label":"Paiement client"},
+  {"default":"0","description":"Si un montant est saisi avant validation, le paiement total ou partiel sera créé automatiquement. Laissez 0 pour une vente à crédit.","fieldname":"montant_a_encaisser","fieldtype":"Currency","label":"Règlement reçu à la vente","non_negative":1,"precision":"2"},
+  {"fieldname":"mode_paiement","fieldtype":"Link","label":"Mode de paiement","options":"Mode of Payment"},
+  {"fieldname":"compte_paiement","fieldtype":"Link","label":"Compte caisse/banque","options":"Account","read_only":1},
+  {"fieldname":"column_break_3","fieldtype":"Column Break"},
+  {"fieldname":"paiement_client","fieldtype":"Link","label":"Dernier paiement client","options":"Payment Entry","read_only":1},
+  {"fieldname":"observations","fieldtype":"Small Text","label":"Observations"},
+  {"fieldname":"amended_from","fieldtype":"Link","label":"Modifié depuis","no_copy":1,"options":"Vente Huilerie","print_hide":1,"read_only":1}
+ ],
+ "is_submittable":1,"module":"achat balance","name":"Vente Huilerie",
+ "permissions":[
+  {"create":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Sales User","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Sales Manager","share":1,"submit":1,"write":1},
+  {"cancel":1,"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"System Manager","share":1,"submit":1,"write":1}
+ ],"sort_field":"date_vente","sort_order":"DESC","track_changes":1
+}

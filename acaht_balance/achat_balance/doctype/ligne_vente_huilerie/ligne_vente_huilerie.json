@@ -1,0 +1,12 @@
+{
+ "doctype":"DocType","editable_grid":1,"engine":"InnoDB","istable":1,"module":"achat balance","name":"Ligne Vente Huilerie",
+ "field_order":["article","designation","quantite","unite","prix_unitaire","montant"],
+ "fields":[
+  {"fieldname":"article","fieldtype":"Link","in_list_view":1,"label":"Article","options":"Item","reqd":1},
+  {"fetch_from":"article.item_name","fieldname":"designation","fieldtype":"Data","label":"Désignation","read_only":1},
+  {"default":"0","fieldname":"quantite","fieldtype":"Float","in_list_view":1,"label":"Quantité","non_negative":1,"precision":"3","reqd":1},
+  {"fetch_from":"article.stock_uom","fieldname":"unite","fieldtype":"Link","label":"Unité","options":"UOM","reqd":1},
+  {"default":"0","fieldname":"prix_unitaire","fieldtype":"Currency","in_list_view":1,"label":"Prix unitaire","non_negative":1,"precision":"2","reqd":1},
+  {"default":"0","fieldname":"montant","fieldtype":"Currency","in_list_view":1,"label":"Montant","precision":"2","read_only":1}
+ ],"permissions":[]
+}

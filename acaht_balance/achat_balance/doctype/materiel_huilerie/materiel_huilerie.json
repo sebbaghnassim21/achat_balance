@@ -1,0 +1,16 @@
+{
+ "actions": [], "autoname": "field:designation", "doctype": "DocType", "engine": "InnoDB",
+ "field_order": ["designation", "categorie", "article_stock", "valeur_caution", "actif"],
+ "fields": [
+  {"fieldname":"designation","fieldtype":"Data","in_list_view":1,"label":"Désignation","reqd":1,"unique":1},
+  {"fieldname":"categorie","fieldtype":"Select","in_list_view":1,"label":"Catégorie","options":"Échelle\nCaisse (Sandok)\nAutre","reqd":1},
+  {"description":"Article ERPNext facultatif pour un futur suivi de stock","fieldname":"article_stock","fieldtype":"Link","label":"Article de stock","options":"Item"},
+  {"default":"0","fieldname":"valeur_caution","fieldtype":"Currency","label":"Caution par unité","non_negative":1,"precision":"2"},
+  {"default":"1","fieldname":"actif","fieldtype":"Check","label":"Actif"}
+ ],
+ "index_web_pages_for_search":1, "module":"achat balance", "name":"Materiel Huilerie",
+ "permissions":[
+  {"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"Stock Manager","share":1,"write":1},
+  {"create":1,"delete":1,"email":1,"export":1,"print":1,"read":1,"report":1,"role":"System Manager","share":1,"write":1}
+ ], "sort_field":"designation", "sort_order":"ASC", "track_changes":1
+}
